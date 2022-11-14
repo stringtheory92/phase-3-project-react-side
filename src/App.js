@@ -1,10 +1,11 @@
 import './App.css';
 import Login from './Login';
-import {BrowserRouter as Router, Route, Routes,} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import Navbar from './Navbar';
 import HomeScreen from './HomeScreen';
 
 function App() {
-  isLoggedIn = localStorage.getItem("username") ? <HomeScreen /> : <Login />
+  const isLoggedIn = localStorage.getItem("username") ? <HomeScreen /> : <Login />
   return (
 
     <Router>
