@@ -18,7 +18,7 @@ function App() {
     console.log(currentUser)
     if (currentUser){
       setIsLoggedIn(true)
-      fetch(`http://localhost:9292/user/${currentUser}`)
+      fetch(`http://localhost:9292/users/${currentUser}`)
       .then(resp => resp.json())
       .then(data => setUserState(data))
     }
