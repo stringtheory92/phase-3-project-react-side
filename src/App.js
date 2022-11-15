@@ -14,7 +14,7 @@ function App() {
   useEffect(() => {
     const currentUser = localStorage.getItem("username");
 
-    console.log(currentUser);
+    console.log("localstorageuser: ", currentUser);
     if (currentUser) {
       setIsLoggedIn(true);
       fetch(`http://localhost:9292/users/${currentUser}`)
@@ -25,7 +25,11 @@ function App() {
     }
   }, []);
 
-  console.log(userState);
+  const toggleLogIn = () => {
+    setIsLoggedIn((status) => !status);
+  };
+
+  console.log("userState: ", userState);
   return (
     <Router>
       <Navbar />
@@ -34,10 +38,17 @@ function App() {
           exact
           path="/"
           element={
-            isLoggedIn ? <HomeScreen /> : <Login replace to={"/login"} />
+            isLoggedIn ? (
+              <HomeScreen toggleLogIn={toggleLogIn} />
+            ) : (
+              <Login replace to={"/login"} toggleLogIn={toggleLogIn} />
+            )
           }
         />
-        <Route path="/trading" element={<Trading userState={userState} />} />
+        <Route
+          path="/trading"
+          element={<Trading userState={userState} toggleLogIn={toggleLogIn} />}
+        />
         <Route
           path="/watchlist"
           element={<WatchList userState={userState} />}
