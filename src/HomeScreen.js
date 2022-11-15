@@ -14,12 +14,12 @@ function HomeScreen() {
 
   console.log(stockData)
 
-  
+
   const displayStocks = stockData.map(stock => {
   return(  
   <div>
     <h2>{stock.company}</h2>
-    {stock.ticker}
+    {stock.ticker} 
   </div>
   )
 })
