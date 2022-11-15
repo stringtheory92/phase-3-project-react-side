@@ -1,44 +1,48 @@
-import './App.css';
-import Login from './Login';
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
-import Navbar from './Navbar';
-import Trading from './Trading';
-import WatchList from './WatchList';
-import HomeScreen from './HomeScreen';
-import { useState, useEffect } from 'react';
+import "./App.css";
+import Login from "./Login";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Navbar from "./Navbar";
+import Trading from "./Trading";
+import WatchList from "./WatchList";
+import HomeScreen from "./HomeScreen";
+import { useState, useEffect } from "react";
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userState, setUserState] = useState({});
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [userState, setUserState] = useState({})
+  useEffect(() => {
+    const currentUser = localStorage.getItem("username");
 
-  useEffect(() =>{
-    const currentUser = localStorage.getItem("username")
-
-    console.log(currentUser)
-    if (currentUser){
-      setIsLoggedIn(true)
-      fetch(`http://localhost:9292/user/${currentUser}`)
-      .then(resp => resp.json())
-      .then(data => setUserState(data))
+    console.log(currentUser);
+    if (currentUser) {
+      setIsLoggedIn(true);
+      fetch(`http://localhost:9292/users/${currentUser}`)
+        .then((resp) => resp.json())
+        .then((data) => setUserState(data));
+    } else {
+      setIsLoggedIn(false);
     }
+  }, []);
 
-    else{
-      setIsLoggedIn(false)
-    }
-
-  }, [])
-
-  console.log(userState)
+  console.log(userState);
   return (
-
     <Router>
-      <Navbar/>
-        <Routes>
-          <Route exact path='/' element={isLoggedIn ? ( <HomeScreen />) : ( <Login replace to={"/login"}/>)}/>
-          <Route path='/trading' element={<Trading userState={userState}/>}/>
-          <Route path='/watchlist' element={<WatchList userState={userState}/>}/>
-        </Routes>
+      <Navbar />
+      <Routes>
+        <Route
+          exact
+          path="/"
+          element={
+            isLoggedIn ? <HomeScreen /> : <Login replace to={"/login"} />
+          }
+        />
+        <Route path="/trading" element={<Trading userState={userState} />} />
+        <Route
+          path="/watchlist"
+          element={<WatchList userState={userState} />}
+        />
+      </Routes>
     </Router>
     // <div className="App">
     //   {isLoggedIn}
