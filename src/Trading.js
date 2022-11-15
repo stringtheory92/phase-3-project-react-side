@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 
 function Trading({ userState }) {
+  const [userBalance, setUserBalance] = useState(0)
+  const [user]
   // localStorage.setItem({key: value})
 
   // console.log("userState: ", userState);
