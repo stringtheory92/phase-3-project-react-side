@@ -1,35 +1,37 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from "react";
 
-function HomeScreen() {
+function HomeScreen({ toggleLogIn }) {
+  const [stockData, setStockData] = useState([]);
 
-  const [stockData, setStockData] = useState([])
+  useEffect(() => {
+    fetch(`http://localhost:9292/stocks`)
+      .then((resp) => resp.json())
+      .then((data) => {
+        setStockData(data);
+        console.log(data);
+      });
+  }, []);
 
-  useEffect(() => {fetch(`http://localhost:9292/stocks`)
-  .then(resp => resp.json())
-  .then(data => {
-    console.log(data)
-    setStockData(data)
-    
-  })
-},[])
+  console.log(stockData);
+  const handleClick = () => {
+    toggleLogIn();
+    localStorage.clear();
+  };
 
-  console.log(stockData)
-
-
-  const displayStocks = stockData.map(stock => {
-  return(  
-  <div>
-    <h2>{stock.company}</h2>
-    {stock.ticker} 
-  </div>
-  )
-})
+  const displayStocks = stockData.map((stock) => {
+    return (
+      <div>
+        <button onClick={handleClick}>Log Out</button>
+        <h1>HOME</h1>
+        <h2>{stock.company}</h2>
+        {stock.ticker}
+      </div>
+    );
+  });
 
   // console.log(displayStocks)
 
-  return (
-    <div>{displayStocks}</div>
-  )
+  return <div>{displayStocks}</div>;
 }
 
-export default HomeScreen
+export default HomeScreen;
