@@ -7,8 +7,9 @@ function HomeScreen() {
   useEffect(() => {fetch(`http://localhost:9292/stocks`)
   .then(resp => resp.json())
   .then(data => {
-    setStockData(data)
     console.log(data)
+    setStockData(data)
+    
   })
 },[])
 
