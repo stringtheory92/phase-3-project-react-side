@@ -1,9 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
-function Watchlist() {
+function WatchList() {
+
+  const currentUser = localStorage.getItem("username")
+
+
+  useEffect(() =>{
+    fetch(`http://localhost:9292/users/${currentUser}/watchlist`)
+    .then(resp => resp.json())
+    .then(data => console.log(data))
+  }, [] )
+  
+
   return (
     <div>Watchlist</div>
   )
 }
 
-export default Watchlist
+export default WatchList
