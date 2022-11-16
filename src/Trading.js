@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-function Trading({ userState }) {
+function Trading({ userState, toggleLogIn }) {
   const [user, setUser] = useState({
     userName: "",
     password: "",
@@ -32,7 +32,17 @@ function Trading({ userState }) {
     localStorage.getItem("username")
   );
 
-  return <div>Trading</div>;
+  const handleClick = () => {
+    toggleLogIn();
+    localStorage.clear();
+  };
+
+  return (
+    <div>
+      <h2>Trading</h2>
+      <button className="logoutButton" onClick={handleClick}>Log Out</button>
+    </div>
+  )
 }
 
 export default Trading;
