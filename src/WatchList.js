@@ -28,6 +28,9 @@ function WatchList({toggleLogIn}) {
     console.log(stock)
     // const stockToDelete = userWatchList.find(stock => console.log(e.target.id))
     fetch(`http://localhost:9292/users/${currentUser}/watchlist/stocks/${stock.id}`)
+    // fetch(`http://localhost:9292/users/${currentUser}/watchlist/stocks/2`)
+    .then(resp => resp.json())
+    .then(data => console.log("Response data:",  data))
     
   }
 
