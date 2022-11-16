@@ -32,17 +32,17 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
     localStorage.getItem("username")
   );
 
-  const handleClick = () => {
-    toggleLogIn();
-    localStorage.clear();
-  };
+  // const handleClick = () => {
+  //   toggleLogIn();
+  //   localStorage.clear();
+  // };
 
   return (
     <div>
       <h2>Trading</h2>
-      <button className="logoutButton" onClick={handleClick}>
+      {/* <button className="logoutButton" onClick={handleClick}>
         Log Out
-      </button>
+      </button> */}
     </div>
   );
 }
