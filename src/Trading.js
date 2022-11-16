@@ -9,23 +9,37 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
   // localStorage.setItem({key: value})
 
   const updateUser = ({ user_name: userName, password, balance }) => {
-    const newBalance = balance === user.balance ? balance : user.balance;
+    console.log("balance: ", balance);
+    console.log("user.balance: ", user.balance);
+    let newBalance;
+    // if ((user.balance = "") || balance === user.balance) {
+    //   newBalance = balance;
+    //   console.log("newBalance: ", newBalance);
+    // } else {
+    //   newBalance = user.balance;
+    //   console.log("in else: ", newBalance);
+    // }
+    if (user.balance.length > 0) {
+      if (balance !== user.balance) newBalance = user.balance;
+    } else newBalance = balance;
 
-    setUser({ ...user, balance: newBalance });
+    setUser({ userName: userName, password: password, balance: newBalance });
   };
-
+  // console.log("user: ", user);
+  console.log("isLoggedIn: ", isLoggedIn);
   useEffect(() => {
-    if (user) {
-      fetch(`http://localhost:9292/users/${localStorage.getItem("username")}`)
-        .then((resp) => resp.json())
-        .then((data) => {
-          console.log("trading user: ", data);
-          // const newBalance = (balance === user.balance) ? balance : user.balance
-          // const { user_name: userName, password, balance } = data;
-          updateUser(data);
-        });
-    }
+    // console.log("in UE: userName?", user.userName.length > 0);
+    // if (user.userName.length > 0) {
+    fetch(`http://localhost:9292/users/${localStorage.getItem("username")}`)
+      .then((resp) => resp.json())
+      .then((data) => {
+        console.log("trading user: ", data);
+        // const newBalance = (balance === user.balance) ? balance : user.balance
+        // const { user_name: userName, password, balance } = data;
+        updateUser(data);
+      });
   }, [user.balance, isLoggedIn]);
+
   console.log("user: ", user);
   console.log(
     "(Trading) Local Storage User: ",
