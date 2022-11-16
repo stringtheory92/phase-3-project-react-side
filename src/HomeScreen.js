@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 function HomeScreen({ toggleLogIn }) {
+  const currentUser = localStorage.getItem("username")
   const [stockData, setStockData] = useState([]);
 
   useEffect(() => {
@@ -19,15 +20,25 @@ function HomeScreen({ toggleLogIn }) {
     localStorage.clear();
   };
 
+  function handleAddToWatchList(e, stock){
+    fetch(`http://localhost:9292/users/${currentUser}/addstock/${stock.id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type" : "application/json"
+      }
+    })
+  }
+
   const displayStocks = stockData.map((stock) => {
     return (
       <tr>
         <td>{stock.ticker}</td>
         <td>{stock.company}</td>
-        <td>300</td>
+        <td>{stock.stock_price.price}</td>
         <td>0.389</td>
         <td>-0.04%</td>
         <td>3.45M</td>
+        <td><button onClick={ (e) => handleAddToWatchList(e, stock)}>Add to Watch List</button></td>
       </tr> 
     );
   });
@@ -36,7 +47,7 @@ function HomeScreen({ toggleLogIn }) {
   
   return (
     <div>
-      <h1 className="home" >WELCOME!
+      <h1 className="home" >WELCOME {currentUser}!
         <button className="logoutButton" onClick={handleClick}>Log Out</button>
       </h1>
 

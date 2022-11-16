@@ -19,7 +19,7 @@ function WatchList({ toggleLogIn }) {
   //   localStorage.clear();
   // };
 
-  console.log(userWatchList);
+  console.log("userWatchList: ", userWatchList);
 
   // const handleClick = () => {
   //   toggleLogIn();
