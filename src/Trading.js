@@ -1,24 +1,32 @@
 import React, { useState, useEffect } from "react";
 
 function Trading({ userState, toggleLogIn, isLoggedIn }) {
+  const [stockList, setStockList] = useState([]);
   const [user, setUser] = useState({
     userName: "",
     password: "",
     balance: "",
   });
-  // localStorage.setItem({key: value})
+  const [formData, setFormData] = useState({
+    userAmount: "",
+    stockSearch: "",
+  });
+  //============== DYNAMIC DROPDOWNS =======================================================
 
+  // let availableStocksDropDown =
+  //   stockList.length === 0 ? (
+  //     <option>loading...</option>
+  //   ) : (
+  //     stockList.map((stock) => <option key={stock.id}>{stock.ticker}</option>)
+  //   );
+
+  // localStorage.setItem({key: value})
+  //=============== USE EFFECTS ================================================================
   const updateUser = ({ user_name: userName, password, balance }) => {
     console.log("balance: ", balance);
     console.log("user.balance: ", user.balance);
+
     let newBalance;
-    // if ((user.balance = "") || balance === user.balance) {
-    //   newBalance = balance;
-    //   console.log("newBalance: ", newBalance);
-    // } else {
-    //   newBalance = user.balance;
-    //   console.log("in else: ", newBalance);
-    // }
     if (user.balance.length > 0) {
       if (balance !== user.balance) newBalance = user.balance;
     } else newBalance = balance;
@@ -46,14 +54,65 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
     localStorage.getItem("username")
   );
 
+  useEffect(() => {
+    // if ((formData.stockSearch.length = 0)) {
+    //   fetch(`http://localhost:9292/stocks`)
+    //     .then((r) => r.json())
+    //     .then((data) => {
+    //       console.log("data: ", data);
+    //       setStockList(data);
+    //     });
+    // } else {
+    //   fetch(`http://localhost:9292/stocks/${formData.stockSearch}`)
+    //     .then((r) => r.json())
+    //     .then((data) => {
+    //       console.log("data: ", data);
+    //       setStockList(data);
+    //     });
+    // }
+    console.log("formData.stockSearch.length: ", formData.stockSearch.length);
+    if (formData.stockSearch.length > 0) {
+      fetch(`http://localhost:9292/stocks/${formData.stockSearch}`)
+        .then((r) => r.json())
+        .then((data) => {
+          console.log("data: ", data);
+          setStockList([data]);
+        });
+    } else {
+      fetch(`http://localhost:9292/stocks`)
+        .then((r) => r.json())
+        .then((data) => {
+          console.log("data: ", data);
+          setStockList(data);
+        });
+    }
+  }, [formData.stockSearch]);
+  console.log("stockList: ", stockList);
+  //=============== HANDLERS ==============================================================
   // const handleClick = () => {
   //   toggleLogIn();
   //   localStorage.clear();
   // };
+  const handleUserAmountChange = (e) => {
+    setFormData({ ...formData, userAmount: e.target.value });
+  };
+  const handleStockSearchChange = (e) => {
+    setFormData({ ...formData, stockSearch: e.target.value });
+  };
+
+  let availableStocksDropDown =
+    stockList.length === 0 ? (
+      <option>loading...</option>
+    ) : (
+      stockList.map((stock) => <option key={stock.id}>{stock.ticker}</option>)
+    );
 
   const userDropdown = <option value="1">1</option>;
+  // const availableStocksDropDown = <option></option>;
+  // const availableStocksDropDown = stockList.map((stock) => (
+  //   <option value={stock.ticker}>{stock.ticker}</option>
+  // ));
 
-  const availableStocksDropDown = <option value="1">1</option>;
   // ==================================================================================
   // ==================================================================================
   const mainPage = {
@@ -134,23 +193,23 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
             Swap From:
           </label>
           <div style={inputDiv}>
+            <div style={dropDownInput}>{`Cash Balance: $${user.balance}`}</div>
             <input
               style={numberInput}
               type="number"
-              // value={userAmount}
-              // onChange={(e) => handleUserAmountChange(e)}
+              value={formData.userAmount}
+              onChange={(e) => handleUserAmountChange(e)}
             />
-            <select
-              style={dropDownInput}
-              name=""
-              id="user-tokens"
-              // value={userSelect}
-              // onChange={(e) => handleUserSelectChange(e)}
-            >
-              {userDropdown}
-            </select>
           </div>
 
+          <label htmlFor="stock_search">Search Available Stocks</label>
+          <input
+            type="text"
+            name="stockSearch"
+            id="stockSearch"
+            value={formData.stockSearch}
+            onChange={handleStockSearchChange}
+          />
           <label htmlFor="lps" style={swapText}>
             Swap To:
           </label>
