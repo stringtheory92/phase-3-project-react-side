@@ -31,7 +31,7 @@ function Login({ toggleLogIn }) {
         // localStorage.getItem("username")
       });
   }
-
+  //   console.log("isLoggedIn: ", isLoggedIn);
   useEffect(() => {
     fetch(`http://localhost:9292/users`)
       .then((resp) => resp.json())

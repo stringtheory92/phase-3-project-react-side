@@ -19,10 +19,11 @@ function WatchList({ toggleLogIn }) {
   //   localStorage.clear();
   // };
 
-  console.log(userWatchList);
+  console.log("userWatchList: ", userWatchList);
 
   function handleDelete(e, stock) {
-    console.log(stock);
+    console.log("stock: ", stock);
+    // console.log("currentUser: ", currentUser);
     // const stockToDelete = userWatchList.find(stock => console.log(e.target.id))
     fetch(
       `http://localhost:9292/users/${currentUser}/watchlist/stocks/${stock.id}`

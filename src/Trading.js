@@ -11,6 +11,7 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
     userAmount: "",
     stockSearch: "",
   });
+  console.log("formData: ", formData);
   //============== DYNAMIC DROPDOWNS =======================================================
 
   // let availableStocksDropDown =
@@ -76,18 +77,26 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
         .then((r) => r.json())
         .then((data) => {
           console.log("data: ", data);
-          setStockList([data]);
+          // if (typeof data === Array) setStockList(data);
+          // else setStockList([data]);
+          setStockList(data);
         });
     } else {
+      console.log("empty search");
       fetch(`http://localhost:9292/stocks`)
         .then((r) => r.json())
         .then((data) => {
           console.log("data: ", data);
-          setStockList(data);
-        });
+          console.log("data.length: ", data.length);
+          if (data.length > 0) {
+            console.log("true: ", data.length);
+            setStockList(data);
+          }
+        })
+        .then(console.log("stockList: ", stockList));
     }
   }, [formData.stockSearch]);
-  console.log("stockList: ", stockList);
+  // console.log("stockList: ", stockList);
   //=============== HANDLERS ==============================================================
   // const handleClick = () => {
   //   toggleLogIn();
