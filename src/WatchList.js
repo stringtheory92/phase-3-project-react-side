@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import WatchListStock from './WatchListStock'
 
-function WatchList() {
+function WatchList({toggleLogIn}) {
 
   const currentUser = localStorage.getItem("username")
   const [userWatchList, setUserWatchList] = useState([])
@@ -14,8 +14,13 @@ function WatchList() {
       setUserWatchList(data)
     
     })
-      
+
   }, [] )
+
+  const handleClick = () => {
+    toggleLogIn();
+    localStorage.clear();
+  };
 
   console.log(userWatchList)
 
@@ -34,8 +39,9 @@ function WatchList() {
 
   return (
     <div>
-      Your Watchlist:
+      <h2>Your Watchlist:</h2>
       {displayWatchList}
+      <button className="logoutButton" onClick={handleClick}>Log Out</button>
     </div>
       
     

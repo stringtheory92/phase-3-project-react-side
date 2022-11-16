@@ -43,31 +43,30 @@ function Login({ toggleLogIn }) {
 
   return (
     <>
-      <h1>
-        Login User: {sampleUser[0]}, password: {sampleUser[1]}
+      <h1 className="login" >LET'S START INVESTING!
       </h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          User name:
-          <input
+      {/* <p className="loginForm">
+        Login User: {sampleUser[0]}, password: {sampleUser[1]}
+      </p> */}
+      <form className="loginForm" onSubmit={handleSubmit}>
+        <div className="login-input">
+          Username :    <input
             type="text"
             name="username"
             value={formData.username}
             onChange={handleChange}
           />
-        </label>
-
-        <label>
-          password:
-          <input
+        </div>
+        <div className="login-input">
+          Password :    <input
             type="text"
             name="password"
             value={formData.password}
             onChange={handleChange}
           />
-        </label>
+        </div>
 
-        <input type="submit" />
+        <input type="submit" value="Log In" className="submitButton"/>
       </form>
     </>
   );

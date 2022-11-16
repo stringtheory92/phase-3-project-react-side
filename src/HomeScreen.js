@@ -13,6 +13,7 @@ function HomeScreen({ toggleLogIn }) {
   }, []);
 
   console.log(stockData);
+
   const handleClick = () => {
     toggleLogIn();
     localStorage.clear();
@@ -20,11 +21,14 @@ function HomeScreen({ toggleLogIn }) {
 
   const displayStocks = stockData.map((stock) => {
     return (
-      <div>
-        <h2>{stock.ticker}</h2>
-        {stock.company}
-        {/* {stock.stock_prices.price} */}
-      </div>
+      <tr>
+        <td>{stock.ticker}</td>
+        <td>{stock.company}</td>
+        <td>300</td>
+        <td>0.389</td>
+        <td>-0.04%</td>
+        <td>3.45M</td>
+      </tr> 
     );
   });
   
@@ -32,9 +36,74 @@ function HomeScreen({ toggleLogIn }) {
   
   return (
     <div>
-      <h1>HOME</h1>
-      <button onClick={handleClick}>Log Out</button>
-      {displayStocks}
+      <h1 className="home" >WELCOME!
+        <button className="logoutButton" onClick={handleClick}>Log Out</button>
+      </h1>
+
+      <div className="title-div">
+        <h3 className="table-title">Trending</h3>
+      </div>
+      <div className="home-table">
+          <table> 
+            <tr>
+              <th>Ticker</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Change</th>
+              <th>% Change</th>
+              <th>Volume</th>
+            </tr> 
+            {displayStocks}
+          </table>
+      </div>
+      <div className="title-div">
+        <h3 className="table-title">Top 20</h3>
+      </div>
+      <div className="home-table">
+        <table> 
+          <tr>
+            <th>Ticker</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Change</th>
+            <th>% Change</th>
+            <th>Volume</th>
+          </tr> 
+          {displayStocks}
+        </table>
+      </div>
+      <div className="title-div">
+        <h3 className="table-title">Gainers</h3>
+      </div>
+      <div className="home-table">
+          <table> 
+            <tr>
+              <th>Ticker</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Change</th>
+              <th>% Change</th>
+              <th>Volume</th>
+            </tr> 
+            {displayStocks}
+          </table>
+      </div>
+      <div className="title-div">
+        <h3 className="table-title">Losers</h3>
+      </div>
+      <div className="home-table">
+        <table> 
+          <tr>
+            <th>Ticker</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Change</th>
+            <th>% Change</th>
+            <th>Volume</th>
+          </tr> 
+          {displayStocks}
+        </table>
+      </div>
     </div>
   )
 }
