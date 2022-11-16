@@ -35,30 +35,38 @@ function App() {
       <Navbar />
       <Routes>
         <Route
-          exact path="/"
+          exact
+          path="/"
           element={
             isLoggedIn ? (
               <HomeScreen toggleLogIn={toggleLogIn} />
-              ) : (
-              <Login replace to={"/login"} toggleLogIn={toggleLogIn} />)
+            ) : (
+              <Login replace to={"/login"} toggleLogIn={toggleLogIn} />
+            )
           }
         />
         <Route
           path="/trading"
           element={
             isLoggedIn ? (
-              <Trading userState={userState} toggleLogIn={toggleLogIn} />
-              ) : (
-              <Login replace to={"/login"} />)
+              <Trading
+                userState={userState}
+                toggleLogIn={toggleLogIn}
+                isLoggedIn={isLoggedIn}
+              />
+            ) : (
+              <Login replace to={"/login"} />
+            )
           }
         />
         <Route
           path="/watchlist"
           element={
             isLoggedIn ? (
-              <WatchList userState={userState} toggleLogIn={toggleLogIn}/>
-              ) : (
-              <Login replace to={"/login"} />)
+              <WatchList userState={userState} toggleLogIn={toggleLogIn} />
+            ) : (
+              <Login replace to={"/login"} />
+            )
           }
         />
       </Routes>

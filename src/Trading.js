@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-function Trading({ userState, toggleLogIn }) {
+function Trading({ userState, toggleLogIn, isLoggedIn }) {
   const [user, setUser] = useState({
     userName: "",
     password: "",
@@ -25,8 +25,8 @@ function Trading({ userState, toggleLogIn }) {
           updateUser(data);
         });
     }
-  }, [user.balance]);
-  // console.log("userState: ", userState);
+  }, [user.balance, isLoggedIn]);
+  console.log("user: ", user);
   console.log(
     "(Trading) Local Storage User: ",
     localStorage.getItem("username")
@@ -40,9 +40,11 @@ function Trading({ userState, toggleLogIn }) {
   return (
     <div>
       <h2>Trading</h2>
-      <button className="logoutButton" onClick={handleClick}>Log Out</button>
+      <button className="logoutButton" onClick={handleClick}>
+        Log Out
+      </button>
     </div>
-  )
+  );
 }
 
 export default Trading;

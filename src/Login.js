@@ -43,14 +43,14 @@ function Login({ toggleLogIn }) {
 
   return (
     <>
-      <h1 className="login" >LET'S START INVESTING!
-      </h1>
-      {/* <p className="loginForm">
+      <h1 className="login">LET'S START INVESTING!</h1>
+      <p className="loginForm">
         Login User: {sampleUser[0]}, password: {sampleUser[1]}
-      </p> */}
+      </p>
       <form className="loginForm" onSubmit={handleSubmit}>
         <div className="login-input">
-          Username :    <input
+          Username :{" "}
+          <input
             type="text"
             name="username"
             value={formData.username}
@@ -58,7 +58,8 @@ function Login({ toggleLogIn }) {
           />
         </div>
         <div className="login-input">
-          Password :    <input
+          Password :{" "}
+          <input
             type="text"
             name="password"
             value={formData.password}
@@ -66,7 +67,7 @@ function Login({ toggleLogIn }) {
           />
         </div>
 
-        <input type="submit" value="Log In" className="submitButton"/>
+        <input type="submit" value="Log In" className="submitButton" />
       </form>
     </>
   );
