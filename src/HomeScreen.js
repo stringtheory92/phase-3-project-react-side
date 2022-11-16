@@ -21,17 +21,22 @@ function HomeScreen({ toggleLogIn }) {
   const displayStocks = stockData.map((stock) => {
     return (
       <div>
-        <button onClick={handleClick}>Log Out</button>
-        <h1>HOME</h1>
-        <h2>{stock.company}</h2>
-        {stock.ticker}
+        <h2>{stock.ticker}</h2>
+        {stock.company}
+        {/* {stock.stock_prices.price} */}
       </div>
     );
   });
-
+  
   // console.log(displayStocks)
-
-  return <div>{displayStocks}</div>;
+  
+  return (
+    <div>
+      <h1>HOME</h1>
+      <button onClick={handleClick}>Log Out</button>
+      {displayStocks}
+    </div>
+  )
 }
 
 export default HomeScreen;
