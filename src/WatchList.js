@@ -1,21 +1,25 @@
-import React, { useEffect, useState } from 'react'
-import WatchListStock from './WatchListStock'
+import React, { useEffect, useState } from "react";
+import WatchListStock from "./WatchListStock";
 
-function WatchList({toggleLogIn}) {
+function WatchList({ toggleLogIn }) {
+  const currentUser = localStorage.getItem("username");
+  const [userWatchList, setUserWatchList] = useState([]);
 
-  const currentUser = localStorage.getItem("username")
-  const [userWatchList, setUserWatchList] = useState([])
-
-  useEffect(() =>{
+  useEffect(() => {
     fetch(`http://localhost:9292/users/${currentUser}/watchlist`)
-    .then(resp => resp.json())
-    .then(data => {
-      console.log(data)
-      setUserWatchList(data)
-    
-    })
+      .then((resp) => resp.json())
+      .then((data) => {
+        console.log(data);
+        setUserWatchList(data);
+      });
+  }, []);
 
-  }, [] )
+  // const handleClick = () => {
+  //   toggleLogIn();
+  //   localStorage.clear();
+  // };
+
+  console.log(userWatchList);
 
   // const handleClick = () => {
   //   toggleLogIn();
@@ -48,9 +52,7 @@ function WatchList({toggleLogIn}) {
       {displayWatchList}
       {/* <button className="logoutButton" onClick={handleClick}>Log Out</button> */}
     </div>
-      
-    
-  )
+  );
 }
 
-export default WatchList
+export default WatchList;

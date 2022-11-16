@@ -15,6 +15,7 @@ function App() {
     const currentUser = localStorage.getItem("username");
 
     console.log("localstorageuser: ", currentUser);
+    console.log("isLoggedIn: ", isLoggedIn);
     if (currentUser) {
       setIsLoggedIn(true);
       fetch(`http://localhost:9292/users/${currentUser}`)
