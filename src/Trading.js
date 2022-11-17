@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 function Trading({ userState, toggleLogIn, isLoggedIn }) {
   const [stockList, setStockList] = useState([]);
   const [user, setUser] = useState({
+    userId: "",
     userName: "",
     password: "",
     balance: "",
@@ -13,7 +14,9 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
     // stockSearch: the control for the search input
     userAmount: "",
     stockSearch: "",
-    selectedStock: "",
+    selectedStock: { ticker: "Choose a stock", stock_price: { price: 0 } },
+
+    // totalPrice: "",
   });
   console.log("formData: ", formData);
 
@@ -21,12 +24,13 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
 
   let availableStocksDropDown =
     stockList.length === 0 ? (
-      <option>loading...</option>
+      <option>No Matches</option>
     ) : (
       stockList.map((stock) => (
         <option
           key={stock.id}
-          value={stock}
+          // Can't have an object as the value of an option (otherwise I would pass in the whole {stock})
+          value={stock.id}
         >{`${stock.ticker} ► $${stock.stock_price.price}`}</option>
       ))
     );
@@ -34,11 +38,44 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
   //=============== USE EFFECTS ================================================================
 
   const updateUser = (data) => {
-    const { user_name: userName, password, balance } = data;
+    const { user_name: userName, password, balance, portfolio, id } = data;
 
     let newBalance;
     if (user.balance.length > 0) {
-      if (balance !== user.balance) newBalance = user.balance;
+      if (balance !== user.balance) {
+        newBalance = user.balance;
+
+        const configObjPATCH = {
+          method: "PATCH",
+          headers: {
+            "content-type": "application/json",
+            accept: "application/json",
+          },
+          body: JSON.stringify({
+            balance: newBalance,
+          }),
+        };
+        const configObjPOST = {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+            accept: "application/json",
+          },
+          body: JSON.stringify({
+            user_id: id,
+            stock_id: "x", // need to pass stock id in to updateUser (perhaps from formData.selectedStock)
+          }),
+        };
+        // Update user with new balance
+        fetch(
+          `http://localhost:9292/users/${localStorage.getItem("username")}`,
+          configObjPATCH
+        )
+          .then((r) => r.json())
+          .then((data) => console.log("user:patchBalance: ", data));
+        //Update user with new portfolio (POST)
+        // .then(fetch(`/users/:id/userstocks_joins`, configObjPOST));
+      }
     } else newBalance = balance;
 
     setUser({
@@ -46,33 +83,13 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
       userName: userName,
       password: password,
       balance: newBalance,
+      userPortfolio: portfolio,
+      userId: id,
     });
-
-    // build user's portfolio based on data.stocks array (reduce to array of objects: { id: id, ticker: ticker, shares: numberOfOccurrences})
-    console.log("user stocks: ", data.stocks);
-    let portfolioArray = [];
-    for (let stock in data.stocks) {
-      if (portfolioArray.length > 0) {
-        for (let item of portfolioArray) {
-          if (item.id === stock.id) {
-            return (item.shares += 1);
-          }
-        }
-        console.log("will it hit?");
-      } else {
-        console.log("pushing");
-        portfolioArray.push({ id: stock.id, ticker: stock.ticker, shares: 1 });
-      }
-    }
-    // setUser({ ...user, userPortfolio: portfolioArray });
-    console.log("portfolioArray: ", portfolioArray);
   };
   console.log("user in state: ", user);
-  // console.log("user: ", user);
-  // console.log("isLoggedIn: ", isLoggedIn);
+
   useEffect(() => {
-    // console.log("in UE: userName?", user.userName.length > 0);
-    // if (user.userName.length > 0) {
     fetch(
       `http://localhost:9292/users/${localStorage.getItem(
         "username"
@@ -80,19 +97,10 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
     )
       .then((resp) => resp.json())
       .then((data) => {
-        // console.log("trading user: ", data);
-        // const newBalance = (balance === user.balance) ? balance : user.balance
-        // const { user_name: userName, password, balance } = data;
         console.log("user data: ", data);
-        // updateUser(data);
+        updateUser(data);
       });
   }, [user.balance, isLoggedIn]);
-
-  // console.log("user: ", user);
-  // console.log(
-  //   "(Trading) Local Storage User: ",
-  //   localStorage.getItem("username")
-  // );
 
   useEffect(() => {
     console.log("formData.stockSearch.length: ", formData.stockSearch.length);
@@ -110,12 +118,12 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
       fetch(`http://localhost:9292/stocks`)
         .then((r) => r.json())
         .then((data) => {
-          // console.log("data: ", data);
+          console.log("stockList in fetch: ", data);
           // console.log("data.length: ", data.length);
-          if (data.length > 0) {
-            // console.log("true: ", data.length);
-            setStockList(data);
-          }
+          // if (data.length > 0) {
+          // console.log("true: ", data.length);
+          setStockList(data);
+          // }
         })
         .then(console.log("stockList: ", stockList));
     }
@@ -133,7 +141,21 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
     setFormData({ ...formData, stockSearch: e.target.value });
   };
   const handleSelectedStockChange = (e) => {
-    setFormData({ ...formData, selectedStock: e.target.value });
+    console.log("selectedStock: ", typeof e.target.value, e.target.value);
+
+    //Because I can't pass in the whole {stock} object as an option value,
+    // I must find the stock object by id from the stockList
+    const focusStockId = Number(e.target.value);
+    const focusStock = stockList.find((stock) => stock.id === focusStockId);
+
+    setFormData({ ...formData, selectedStock: focusStock });
+  };
+  const handleBuySubmit = () => {
+    //purchase price
+    const purchasePrice =
+      formData.selectedStock.stock_price.price * Number(formData.userAmount);
+    //set user.balance in state, update (patch) user's balance, then post to userstocks_joins table
+    setUser({ ...user, balance: user.balance - purchasePrice });
   };
 
   // ==================================================================================
@@ -211,18 +233,18 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
       <div style={mainPage}>
         <h2>Trading</h2>
 
-        <form style={formStyles}>
+        <form style={formStyles} onSubmit={handleBuySubmit}>
           <label htmlFor="user-tokens" style={swapText}>
-            Swap From:
+            {`${user.userName}'s trading account`}
           </label>
           <div style={inputDiv}>
             <div style={dropDownInput}>{`Cash Balance: $${user.balance}`}</div>
-            <input
+            {/* <input
               style={numberInput}
               type="number"
               value={formData.userAmount}
               onChange={(e) => handleUserAmountChange(e)}
-            />
+            /> */}
             {/* <div>{(formData.userAmount.length === 0) ?  :}</div> */}
           </div>
 
@@ -235,16 +257,14 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
             onChange={handleStockSearchChange}
           />
           <label htmlFor="lps" style={swapText}>
-            Swap To:
+            Amount of shares to purchase:
           </label>
           <div style={inputDiv}>
             <input
               style={numberInput}
               type="number"
-              name=""
-              id=""
-              // value={lpsAmount}
-              // onChange={(e) => handleLpsAmountChange(e)}
+              value={formData.userAmount}
+              onChange={(e) => handleUserAmountChange(e)}
             />
             <select
               style={dropDownInput}
@@ -253,17 +273,28 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
               value={formData.selectedStock}
               onChange={(e) => handleSelectedStockChange(e)}
             >
+              <option value="1">{`${formData.selectedStock.ticker}`}</option>
               {availableStocksDropDown}
             </select>
           </div>
           <div style={infoDiv}>
-            <p>Exchange Rate</p>
-            <p>Slippage</p>
-            <p>Minimum received</p>
+            <div style={dropDownInput}>{`Total Price: $${
+              // formData.selectedStock.length > 0
+              //   ? formData.selectedStock.stock_price.price *
+              //     Number(formData.userAmount)
+              //   : 0
+              formData.selectedStock.stock_price.price *
+              Number(formData.userAmount)
+            }`}</div>
+            <div style={dropDownInput}>{`Balance Remaining: $${
+              user.balance -
+              formData.selectedStock.stock_price.price *
+                Number(formData.userAmount)
+            }`}</div>
           </div>
 
           <button type="submit" style={confirmBtn}>
-            Confirm Trade
+            BUY
           </button>
         </form>
       </div>
