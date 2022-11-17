@@ -98,8 +98,8 @@ function BuyForm({
         </label>
         <div style={inputDiv}>
           <div style={dropDownInput}>
-            {`Cash Balance: $${user.balance}`}
-            {/* {`Cash Balance: $${user.balance.toFixed(2)}`} */}
+            {/* {`Cash Balance: $${user.balance}`} */}
+            {`Cash Balance: $${Number(user.balance).toFixed(2)}`}
           </div>
           {/* <input
   style={numberInput}
@@ -145,8 +145,10 @@ function BuyForm({
             //   ? formData.selectedStock.stock_price.price *
             //     Number(formData.userAmount)
             //   : 0
-            formData.selectedStock.stock_price.price *
-            Number(formData.userAmount)
+            (
+              formData.selectedStock.stock_price.price *
+              Number(formData.userAmount)
+            ).toFixed(2)
           }`}</div>
           <div style={dropDownInput}>{`Balance Remaining: $${(
             user.balance -

@@ -46,33 +46,32 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
 
   //=============== USE EFFECTS ================================================================
 
-  const generatePOSTConfig = (formData) => {
-    // return {
-    //   method: "POST",
-    //   headers: {
-    //     "content-type": "application/json",
-    //     accept: "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     user_id: id,
-    //     stock_id: formData.selectedStock.id, // need to pass stock id in to updateUser (perhaps from formData.selectedStock)
-    //   }),
-    // };
+  const deleteUserStocks = (configObjDELETE, user_id, stock_id) => {
+    console.log("inDelete");
+    console.log("formData.userAmount: ", formData.userAmount);
+    // let soldStocks = 1;
+    // while (soldStocks >= Number(formData.userAmount)) {
+    //   fetch(
+    //     `http://localhost:9292/userstocks_joins/${user_id}/${stock_id}`,
+    //     configObjDELETE
+    //   )
+    //     .then((r) => r.json())
+    //     .then((data) => {
+    //       console.log("updated stock data: ", data);
+    //       updateUser({ ...user, userPortfolio: data.portfolio });
+    //       soldStocks += 1;
+    //     });
+    fetch(
+      `http://localhost:9292/userstocks_joins/${user_id}/${stock_id}/`,
+      configObjDELETE
+    )
+      .then((r) => r.json())
+      .then((data) => {
+        console.log("updated stock data: ", data);
+        updateUser({ ...user, userPortfolio: data.portfolio });
+      });
   };
-  const generateDELETEConfig = (formData) => {
-    // return {
-    //   method: "DELETE",
-    //   headers: {
-    //     "content-type": "application/json",
-    //     accept: "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     user_id: id,
-    //     stock_id: formData.selectedStock.id,
-    //   }),
-    // };
-  };
-
+  console.log("buySell: ", buySell);
   const updateUser = (data) => {
     const { user_name: userName, password, balance, portfolio, id } = data;
 
@@ -138,10 +137,6 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
             "content-type": "application/json",
             accept: "application/json",
           },
-          body: JSON.stringify({
-            user_id: id,
-            stock_id: formData.selectedStock.id,
-          }),
         };
 
         //====== UPDATE USER BALANCE AND STOCK HOLDINGS ======
@@ -157,29 +152,38 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
               ? fetch(
                   `http://localhost:9292/users/${localStorage.getItem(
                     "username"
-                  )}/userstocks_joins`,
+                  )}/userstocks_joins/`,
                   configObjPOST
                 )
                   .then((r) => r.json())
                   .then((data) => {
                     console.log("updated stock data: ", data);
-                    updateUser({ ...user, portfolio: data.portfolio });
+                    updateUser({
+                      ...user,
+                      userPortfolio: data.portfolio,
+                    });
                   })
-              : fetch(
-                  `http://localhost:9292/users/${localStorage.getItem(
-                    "username"
-                  )}/userstocks_joins`,
-                  configObjDELETE
-                )
-                  .then((r) => r.json())
-                  .then((data) => {
-                    console.log("updated stock data: ", data);
-                    updateUser({ ...user, portfolio: data.portfolio });
-                  });
+              : deleteUserStocks(
+                  configObjDELETE,
+                  id,
+                  formData.selectedStock.id
+                );
+            // fetch(
+            //     `http://localhost:9292/users/${localStorage.getItem(
+            //       "username"
+            //     )}/userstocks_joins`,
+            //     configObjDELETE
+            //   )
+            //     .then((r) => r.json())
+            //     .then((data) => {
+            //       console.log("updated stock data: ", data);
+            //       updateUser({ ...user, portfolio: data.portfolio });
+            //     });
           });
       }
     } else {
       newBalance = balance;
+
       setUser({
         ...user,
         userName: userName,
@@ -273,7 +277,8 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
 
     const sellPrice =
       formData.selectedStock.stock_price.price * Number(formData.userAmount);
-    const total = user.balance + sellPrice;
+
+    const total = Number(user.balance) + sellPrice;
     console.log("user.balance: ", user.balance);
     console.log("sellPrice: ", sellPrice);
     setUser({ ...user, balance: total });
@@ -411,7 +416,7 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
               user={user}
               stockList={stockList}
               formData={formData}
-              generatePOSTConfig={generatePOSTConfig}
+              // generatePOSTConfig={generatePOSTConfig}
               handleStockSearchChange={handleStockSearchChange}
               handleSelectedStockChange={handleSelectedStockChange}
               handleUserAmountChange={handleUserAmountChange}
@@ -424,7 +429,7 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
               user={user}
               stockList={stockList}
               formData={formData}
-              generateDELETEConfig={generateDELETEConfig}
+              // generateDELETEConfig={generateDELETEConfig}
               handleSelectedStockChange={handleSelectedStockChange}
               handleStockSearchChange={handleStockSearchChange}
               handleUserAmountChange={handleUserAmountChange}
