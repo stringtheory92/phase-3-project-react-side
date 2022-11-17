@@ -5,11 +5,16 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
   const [stockList, setStockList] = useState([]);
   const [buySell, setBuySell] = useState(false); // buy = true, sell = false
   const [user, setUser] = useState({
-    userId: userState.id,
-    userName: userState.user_name,
-    password: userState.password,
-    balance: userState.balance,
-    userPortfolio: userState.portfolio,
+    userId: "",
+    userName: "",
+    password: "",
+    balance: 0,
+    userPortfolio: [],
+    // userId: userState.id,
+    // userName: userState.user_name,
+    // password: userState.password,
+    // balance: userState.balance,
+    // userPortfolio: userState.portfolio,
   });
   const [formData, setFormData] = useState({
     // userAmount: control for amount (in quantity of shares) to purchase
@@ -145,13 +150,14 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
       });
   }, [user.balance, isLoggedIn]);
 
+  console.log("stockList: ", stockList);
   useEffect(() => {
     console.log("formData.stockSearch.length: ", formData.stockSearch.length);
     if (formData.stockSearch.length > 0) {
       fetch(`http://localhost:9292/stocks/${formData.stockSearch}`)
         .then((r) => r.json())
         .then((data) => {
-          // console.log("data: ", data);
+          console.log("data: ", data);
           // if (typeof data === Array) setStockList(data);
           // else setStockList([data]);
           setUser({ ...user, userPortfolio: data.portfolio });
@@ -162,7 +168,7 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
       fetch(`http://localhost:9292/stocks`)
         .then((r) => r.json())
         .then((data) => {
-          // console.log("stockList in fetch: ", data);
+          console.log("stockList in fetch: ", data);
           // console.log("data.length: ", data.length);
           // if (data.length > 0) {
           // console.log("true: ", data.length);
@@ -171,6 +177,7 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
         })
         .then(console.log("stockList: ", stockList));
     }
+    // }, []);
   }, [formData.stockSearch]);
   // console.log("stockList: ", stockList);
   //=============== HANDLERS ==============================================================
@@ -219,7 +226,21 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
   //================== SELL FORM ===========================================================
   //================== SELL FORM ===========================================================
   //================== SELL FORM ===========================================================
-
+  // let userStocksDropDown;
+  // if (formData.stockSearch.length > 0) {
+  //   userStocksDropDown = user.userPortfolio.map((stock) => {
+  //     const stockPrice = stockList.find(
+  //       (listedStock) => stock.id === listedStock.id
+  //     ).stock_price.price;
+  //     console.log(stockPrice);
+  //     return (
+  //       <option
+  //         key={stock.id}
+  //         value={stock.id}
+  //       >{`${stock.ticker} - available: ${stock.count}  @  $${stockPrice}`}</option>
+  //     );
+  //   });
+  // }
   let userStocksDropDown = user.userPortfolio.map((stock) => {
     const stockPrice = stockList.find(
       (listedStock) => stock.id === listedStock.id
@@ -232,6 +253,7 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
       >{`${stock.ticker} - available: ${stock.count}  @  $${stockPrice}`}</option>
     );
   });
+
   // console.log(user.userPortfolio);
 
   // ==================================================================================
@@ -328,9 +350,10 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
                   {`${user.userName}'s trading account`}
                 </label>
                 <div style={inputDiv}>
-                  <div
-                    style={dropDownInput}
-                  >{`Cash Balance: $${user.balance.toFixed(2)}`}</div>
+                  <div style={dropDownInput}>
+                    {`Cash Balance: $${user.balance}`}
+                    {/* {`Cash Balance: $${user.balance.toFixed(2)}`} */}
+                  </div>
                   {/* <input
               style={numberInput}
               type="number"
@@ -401,14 +424,14 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
                   {`${user.userName}'s trading account`}
                 </label>
 
-                {/* <label htmlFor="stock_search">Search Available Stocks</label>
+                <label htmlFor="stock_search">Search Available Stocks</label>
                 <input
                   type="text"
                   name="stockSearch"
                   id="stockSearch"
                   value={formData.stockSearch}
                   onChange={handleStockSearchChange}
-                /> */}
+                />
                 <label htmlFor="lps" style={swapText}>
                   Amount of shares to sell:
                 </label>
