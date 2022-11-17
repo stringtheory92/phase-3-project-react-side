@@ -62,7 +62,7 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
     //       soldStocks += 1;
     //     });
     fetch(
-      `http://localhost:9292/userstocks_joins/${user_id}/${stock_id}/`,
+      `http://localhost:9292/userstocks_joins/${user_id}/${stock_id}/${formData.userAmount}`,
       configObjDELETE
     )
       .then((r) => r.json())
