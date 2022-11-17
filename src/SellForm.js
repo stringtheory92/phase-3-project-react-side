@@ -128,6 +128,9 @@ function SellForm({
             {userStocksDropDown}
           </select>
         </div>
+        <div style={dropDownInput}>{`Balance: $${Number(user.balance).toFixed(
+          2
+        )}`}</div>
         <div style={infoDiv}>
           <div style={dropDownInput}>{`Total Sale Price: $${
             // formData.selectedStock.length > 0
@@ -137,11 +140,16 @@ function SellForm({
             formData.selectedStock.stock_price.price *
             Number(formData.userAmount)
           }`}</div>
-          <div style={dropDownInput}>{`Balance: $${(
-            user.balance -
+          <div style={dropDownInput}>{`New Balance: $${(
+            Number(user.balance) +
             formData.selectedStock.stock_price.price *
               Number(formData.userAmount)
           ).toFixed(2)}`}</div>
+          {/* <div style={dropDownInput}>{`Balance: $${(
+            user.balance -
+            formData.selectedStock.stock_price.price *
+              Number(formData.userAmount)
+          ).toFixed(2)}`}</div> */}
         </div>
         {/* <div style={inputDiv}>
       <div

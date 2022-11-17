@@ -40,7 +40,7 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
           key={stock.id}
           // Can't have an object as the value of an option (otherwise I would pass in the whole {stock})
           value={stock.id}
-        >{`${stock.ticker} ► $${stock.stock_price.price}`}</option>
+        >{`${stock.ticker}  ►  $${stock.stock_price.price}`}</option>
       ))
     );
 
@@ -278,6 +278,9 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
     console.log("sellPrice: ", sellPrice);
     setUser({ ...user, balance: total });
   };
+  const handleBuySellToggle = () => {
+    setBuySell((buySell) => !buySell);
+  };
   //================== SELL FORM ===========================================================
   //================== SELL FORM ===========================================================
   //================== SELL FORM ===========================================================
@@ -389,6 +392,7 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
     <div>
       <div style={mainPage}>
         <h1>Trading</h1>
+        <button onClick={handleBuySellToggle}>Buy|Sell</button>
         <div>
           <ul>
             {user.userPortfolio.map((stock) => {
@@ -421,6 +425,7 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
               stockList={stockList}
               formData={formData}
               generateDELETEConfig={generateDELETEConfig}
+              handleSelectedStockChange={handleSelectedStockChange}
               handleStockSearchChange={handleStockSearchChange}
               handleUserAmountChange={handleUserAmountChange}
               userStocksDropDown={userStocksDropDown}
