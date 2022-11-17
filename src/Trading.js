@@ -6,6 +6,7 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
     userName: "",
     password: "",
     balance: "",
+    userPortfolio: [],
   });
   const [formData, setFormData] = useState({
     // userAmount: control for amount (in quantity of shares) to purchase
@@ -32,29 +33,58 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
 
   //=============== USE EFFECTS ================================================================
 
-  const updateUser = ({ user_name: userName, password, balance }) => {
-    // console.log("balance: ", balance);
-    // console.log("user.balance: ", user.balance);
+  const updateUser = (data) => {
+    const { user_name: userName, password, balance } = data;
 
     let newBalance;
     if (user.balance.length > 0) {
       if (balance !== user.balance) newBalance = user.balance;
     } else newBalance = balance;
 
-    setUser({ userName: userName, password: password, balance: newBalance });
+    setUser({
+      ...user,
+      userName: userName,
+      password: password,
+      balance: newBalance,
+    });
+
+    // build user's portfolio based on data.stocks array (reduce to array of objects: { id: id, ticker: ticker, shares: numberOfOccurrences})
+    console.log("user stocks: ", data.stocks);
+    let portfolioArray = [];
+    for (let stock in data.stocks) {
+      if (portfolioArray.length > 0) {
+        for (let item of portfolioArray) {
+          if (item.id === stock.id) {
+            return (item.shares += 1);
+          }
+        }
+        console.log("will it hit?");
+      } else {
+        console.log("pushing");
+        portfolioArray.push({ id: stock.id, ticker: stock.ticker, shares: 1 });
+      }
+    }
+    // setUser({ ...user, userPortfolio: portfolioArray });
+    console.log("portfolioArray: ", portfolioArray);
   };
+  console.log("user in state: ", user);
   // console.log("user: ", user);
   // console.log("isLoggedIn: ", isLoggedIn);
   useEffect(() => {
     // console.log("in UE: userName?", user.userName.length > 0);
     // if (user.userName.length > 0) {
-    fetch(`http://localhost:9292/users/${localStorage.getItem("username")}`)
+    fetch(
+      `http://localhost:9292/users/${localStorage.getItem(
+        "username"
+      )}/userstocks_joins`
+    )
       .then((resp) => resp.json())
       .then((data) => {
         // console.log("trading user: ", data);
         // const newBalance = (balance === user.balance) ? balance : user.balance
         // const { user_name: userName, password, balance } = data;
-        updateUser(data);
+        console.log("user data: ", data);
+        // updateUser(data);
       });
   }, [user.balance, isLoggedIn]);
 
@@ -65,21 +95,6 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
   // );
 
   useEffect(() => {
-    // if ((formData.stockSearch.length = 0)) {
-    //   fetch(`http://localhost:9292/stocks`)
-    //     .then((r) => r.json())
-    //     .then((data) => {
-    //       console.log("data: ", data);
-    //       setStockList(data);
-    //     });
-    // } else {
-    //   fetch(`http://localhost:9292/stocks/${formData.stockSearch}`)
-    //     .then((r) => r.json())
-    //     .then((data) => {
-    //       console.log("data: ", data);
-    //       setStockList(data);
-    //     });
-    // }
     console.log("formData.stockSearch.length: ", formData.stockSearch.length);
     if (formData.stockSearch.length > 0) {
       fetch(`http://localhost:9292/stocks/${formData.stockSearch}`)
