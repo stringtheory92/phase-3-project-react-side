@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
 
+// NEED TO WORK ON UPDATING PORTFOLIO IN DOM ON PURCHASE
 function Trading({ userState, toggleLogIn, isLoggedIn }) {
   const [stockList, setStockList] = useState([]);
-  const [buySell, setBuySell] = useState(true); // buy = true, sell = false
+  const [buySell, setBuySell] = useState(false); // buy = true, sell = false
   const [user, setUser] = useState({
     userId: userState.id,
     userName: userState.user_name,
     password: userState.password,
     balance: userState.balance,
-    userPortfolio: [],
+    userPortfolio: userState.portfolio,
   });
   const [formData, setFormData] = useState({
     // userAmount: control for amount (in quantity of shares) to purchase
@@ -71,6 +72,17 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
             stock_id: formData.selectedStock.id, // need to pass stock id in to updateUser (perhaps from formData.selectedStock)
           }),
         };
+        const configObjDELETE = {
+          method: "DELETE",
+          headers: {
+            "content-type": "application/json",
+            accept: "application/json",
+          },
+          body: JSON.stringify({
+            user_id: id,
+            stock_id: formData.selectedStock.id,
+          }),
+        };
 
         //====== UPDATE USER BALANCE AND STOCK HOLDINGS ======
         // Update user with new balance
@@ -79,12 +91,32 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
           configObjPATCH
         )
           .then((r) => r.json())
-          .then((data) => console.log("user:patchBalance: ", data))
-
-          //Update user with new portfolio (POST)
-          .then(fetch(`/users/${id}/userstocks_joins`, configObjPOST))
-          .then((r) => r.json())
-          .then((data) => console.log("updated stock data: ", data));
+          .then((data) => {
+            console.log("user:patchBalance: ", data);
+            buySell
+              ? fetch(
+                  `http://localhost:9292/users/${localStorage.getItem(
+                    "username"
+                  )}/userstocks_joins`,
+                  configObjPOST
+                )
+                  .then((r) => r.json())
+                  .then((data) => {
+                    console.log("updated stock data: ", data);
+                    updateUser({ ...user, portfolio: data.portfolio });
+                  })
+              : fetch(
+                  `http://localhost:9292/users/${localStorage.getItem(
+                    "username"
+                  )}/userstocks_joins`,
+                  configObjDELETE
+                )
+                  .then((r) => r.json())
+                  .then((data) => {
+                    console.log("updated stock data: ", data);
+                    updateUser({ ...user, portfolio: data.portfolio });
+                  });
+          });
       }
     } else {
       newBalance = balance;
@@ -174,6 +206,33 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
     if (remaining >= 0) setUser({ ...user, balance: remaining });
     else alert("Insufficient Funds");
   };
+  const handleSellSubmit = (e) => {
+    e.preventDefault();
+
+    const sellPrice =
+      formData.selectedStock.stock_price.price * Number(formData.userAmount);
+    const total = user.balance + sellPrice;
+    console.log("user.balance: ", user.balance);
+    console.log("sellPrice: ", sellPrice);
+    setUser({ ...user, balance: total });
+  };
+  //================== SELL FORM ===========================================================
+  //================== SELL FORM ===========================================================
+  //================== SELL FORM ===========================================================
+
+  let userStocksDropDown = user.userPortfolio.map((stock) => {
+    const stockPrice = stockList.find(
+      (listedStock) => stock.id === listedStock.id
+    ).stock_price.price;
+    console.log(stockPrice);
+    return (
+      <option
+        key={stock.id}
+        value={stock.id}
+      >{`${stock.ticker} - available: ${stock.count}  @  $${stockPrice}`}</option>
+    );
+  });
+  // console.log(user.userPortfolio);
 
   // ==================================================================================
   // ==================================================================================
@@ -237,7 +296,7 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
     backgroundColor: "dodgerBlue",
     padding: "0.5rem 0.9rem",
     borderRadius: "10px",
-    ouline: "none",
+    outline: "none",
     border: "none",
     color: "white",
   };
@@ -248,7 +307,7 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
   return (
     <div>
       <div style={mainPage}>
-        <h2>Trading</h2>
+        <h1>Trading</h1>
         <div>
           <ul>
             {user.userPortfolio.map((stock) => {
@@ -260,73 +319,146 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
             })}
           </ul>
         </div>
-
-        <form style={formStyles} onSubmit={handleBuySubmit}>
-          <label htmlFor="user-tokens" style={swapText}>
-            {`${user.userName}'s trading account`}
-          </label>
-          <div style={inputDiv}>
-            <div style={dropDownInput}>{`Cash Balance: $${user.balance.toFixed(
-              2
-            )}`}</div>
-            {/* <input
+        <div>
+          {buySell ? (
+            <div>
+              <h2>Buy</h2>
+              <form style={formStyles} onSubmit={handleBuySubmit}>
+                <label htmlFor="user-tokens" style={swapText}>
+                  {`${user.userName}'s trading account`}
+                </label>
+                <div style={inputDiv}>
+                  <div
+                    style={dropDownInput}
+                  >{`Cash Balance: $${user.balance.toFixed(2)}`}</div>
+                  {/* <input
               style={numberInput}
               type="number"
               value={formData.userAmount}
               onChange={(e) => handleUserAmountChange(e)}
             /> */}
-            {/* <div>{(formData.userAmount.length === 0) ?  :}</div> */}
-          </div>
+                  {/* <div>{(formData.userAmount.length === 0) ?  :}</div> */}
+                </div>
 
-          <label htmlFor="stock_search">Search Available Stocks</label>
-          <input
-            type="text"
-            name="stockSearch"
-            id="stockSearch"
-            value={formData.stockSearch}
-            onChange={handleStockSearchChange}
-          />
-          <label htmlFor="lps" style={swapText}>
-            Amount of shares to purchase:
-          </label>
-          <div style={inputDiv}>
-            <input
-              style={numberInput}
-              type="number"
-              value={formData.userAmount}
-              onChange={(e) => handleUserAmountChange(e)}
-            />
-            <select
-              style={dropDownInput}
-              name="stockList"
-              id="stockList"
-              value={formData.selectedStock}
-              onChange={(e) => handleSelectedStockChange(e)}
-            >
-              <option value="1">{`${formData.selectedStock.ticker}`}</option>
-              {availableStocksDropDown}
-            </select>
-          </div>
-          <div style={infoDiv}>
-            <div style={dropDownInput}>{`Total Price: $${
-              // formData.selectedStock.length > 0
-              //   ? formData.selectedStock.stock_price.price *
-              //     Number(formData.userAmount)
-              //   : 0
-              formData.selectedStock.stock_price.price *
-              Number(formData.userAmount)
-            }`}</div>
-            <div style={dropDownInput}>{`Balance Remaining: $${(
-              user.balance -
-              formData.selectedStock.stock_price.price *
-                Number(formData.userAmount)
-            ).toFixed(2)}`}</div>
-          </div>
+                <label htmlFor="stock_search">Search Available Stocks</label>
+                <input
+                  type="text"
+                  name="stockSearch"
+                  id="stockSearch"
+                  value={formData.stockSearch}
+                  onChange={handleStockSearchChange}
+                />
+                <label htmlFor="lps" style={swapText}>
+                  Amount of shares to purchase:
+                </label>
+                <div style={inputDiv}>
+                  <input
+                    style={numberInput}
+                    type="number"
+                    value={formData.userAmount}
+                    onChange={(e) => handleUserAmountChange(e)}
+                  />
+                  <select
+                    style={dropDownInput}
+                    name="stockList"
+                    id="stockList"
+                    value={formData.selectedStock}
+                    onChange={(e) => handleSelectedStockChange(e)}
+                  >
+                    <option value="1">{`${formData.selectedStock.ticker}`}</option>
+                    {availableStocksDropDown}
+                  </select>
+                </div>
+                <div style={infoDiv}>
+                  <div style={dropDownInput}>{`Total Price: $${
+                    // formData.selectedStock.length > 0
+                    //   ? formData.selectedStock.stock_price.price *
+                    //     Number(formData.userAmount)
+                    //   : 0
+                    formData.selectedStock.stock_price.price *
+                    Number(formData.userAmount)
+                  }`}</div>
+                  <div style={dropDownInput}>{`Balance Remaining: $${(
+                    user.balance -
+                    formData.selectedStock.stock_price.price *
+                      Number(formData.userAmount)
+                  ).toFixed(2)}`}</div>
+                </div>
 
-          <button type="submit" style={confirmBtn}>
-            {buySell ? "BUY" : "SELL"}
-          </button>
-        </form>
+                <button type="submit" style={confirmBtn}>
+                  {buySell ? "BUY" : "SELL"}
+                </button>
+              </form>
+            </div>
+          ) : (
+            // ==================================================================================
+            // ==================================================================================
+            // ==================================================================================
+            <div>
+              <h1>Sell</h1>
+              <form style={formStyles} onSubmit={handleSellSubmit}>
+                <label htmlFor="user-tokens" style={swapText}>
+                  {`${user.userName}'s trading account`}
+                </label>
+
+                {/* <label htmlFor="stock_search">Search Available Stocks</label>
+                <input
+                  type="text"
+                  name="stockSearch"
+                  id="stockSearch"
+                  value={formData.stockSearch}
+                  onChange={handleStockSearchChange}
+                /> */}
+                <label htmlFor="lps" style={swapText}>
+                  Amount of shares to sell:
+                </label>
+                <div style={inputDiv}>
+                  <input
+                    style={numberInput}
+                    type="number"
+                    value={formData.userAmount}
+                    onChange={(e) => handleUserAmountChange(e)}
+                  />
+                  <select
+                    style={dropDownInput}
+                    name="stockList"
+                    id="stockList"
+                    value={formData.selectedStock}
+                    onChange={(e) => handleSelectedStockChange(e)}
+                  >
+                    <option value="1">{`${formData.selectedStock.ticker}`}</option>
+                    {userStocksDropDown}
+                  </select>
+                </div>
+                <div style={infoDiv}>
+                  <div style={dropDownInput}>{`Total Sale Price: $${
+                    // formData.selectedStock.length > 0
+                    //   ? formData.selectedStock.stock_price.price *
+                    //     Number(formData.userAmount)
+                    //   : 0
+                    formData.selectedStock.stock_price.price *
+                    Number(formData.userAmount)
+                  }`}</div>
+                  <div style={dropDownInput}>{`Balance: $${(
+                    user.balance -
+                    formData.selectedStock.stock_price.price *
+                      Number(formData.userAmount)
+                  ).toFixed(2)}`}</div>
+                </div>
+                {/* <div style={inputDiv}>
+                  <div
+                    style={dropDownInput}
+                  >{`Cash Balance: $${user.balance.toFixed(2)}`}</div>
+                  
+                </div> */}
+
+                <button type="submit" style={confirmBtn}>
+                  {buySell ? "BUY" : "SELL"}
+                </button>
+              </form>
+            </div>
+          )}
+        </div>
       </div>
       {/* <button className="logoutButton" onClick={handleClick}>
         Log Out
