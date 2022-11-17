@@ -152,7 +152,7 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
               ? fetch(
                   `http://localhost:9292/users/${localStorage.getItem(
                     "username"
-                  )}/userstocks_joins/`,
+                  )}/userstocks_joins/${formData.userAmount}`,
                   configObjPOST
                 )
                   .then((r) => r.json())
