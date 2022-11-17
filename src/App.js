@@ -14,8 +14,8 @@ function App() {
   useEffect(() => {
     const currentUser = localStorage.getItem("username");
 
-    console.log("localstorageuser: ", currentUser);
-    console.log("isLoggedIn: ", isLoggedIn);
+    // console.log("localstorageuser: ", currentUser);
+    // console.log("isLoggedIn: ", isLoggedIn);
     if (currentUser) {
       setIsLoggedIn(true);
       fetch(`http://localhost:9292/users/${currentUser}/userstocks_joins`)
@@ -30,7 +30,7 @@ function App() {
     setIsLoggedIn((status) => !status);
   };
 
-  console.log("userState: ", userState);
+  // console.log("userState: ", userState);
   return (
     <Router>
       <Navbar />

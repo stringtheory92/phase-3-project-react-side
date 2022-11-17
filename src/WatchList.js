@@ -9,7 +9,7 @@ function WatchList({ toggleLogIn }) {
     fetch(`http://localhost:9292/users/${currentUser}/watchlist`)
       .then((resp) => resp.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         setUserWatchList(data);
       });
   }, []);
@@ -19,27 +19,27 @@ function WatchList({ toggleLogIn }) {
   //   localStorage.clear();
   // };
 
-  console.log("userWatchList: ", userWatchList);
+  // console.log("userWatchList: ", userWatchList);
 
   // const handleClick = () => {
   //   toggleLogIn();
   //   localStorage.clear();
   // };
 
-  console.log(userWatchList)
+  // console.log(userWatchList)
 
   function handleDelete(e, stock){
-    console.log(stock)
+    // console.log(stock)
     fetch(`http://localhost:9292/users/${currentUser}/watchlist/stocks/${stock.id}`, {
       method: "DELETE"
     })
 
     const updateStateWithDeleted = userWatchList.filter(watchListItem => watchListItem.id !== stock.id)
-    console.log("User Watchlist without the deleted stock: ", updateStateWithDeleted)
+    // console.log("User Watchlist without the deleted stock: ", updateStateWithDeleted)
     setUserWatchList(updateStateWithDeleted)  
-    console.log(userWatchList)
+    // console.log(userWatchList)
   }
-  console.log(userWatchList)
+  // console.log(userWatchList)
   const displayWatchList = userWatchList.map(stock => <WatchListStock key={stock.id} stock={stock} handleDelete={handleDelete}/>)
 
   
@@ -50,7 +50,6 @@ function WatchList({ toggleLogIn }) {
     <div>
       <h2>Your Watchlist:</h2>
       {displayWatchList}
-      {/* <button className="logoutButton" onClick={handleClick}>Log Out</button> */}
     </div>
   );
 }

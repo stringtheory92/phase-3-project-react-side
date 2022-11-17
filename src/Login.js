@@ -15,7 +15,7 @@ function Login({ toggleLogIn }) {
       [name]: value,
     });
 
-    console.log(e.target.name, e.target.value);
+    // console.log(e.target.name, e.target.value);
   }
 
   function handleSubmit(e) {
@@ -25,7 +25,7 @@ function Login({ toggleLogIn }) {
     fetch(`http://localhost:9292/users/${formData.username}`)
       .then((resp) => resp.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         localStorage.setItem("username", data.user_name);
         toggleLogIn();
         // localStorage.getItem("username")
@@ -36,7 +36,7 @@ function Login({ toggleLogIn }) {
     fetch(`http://localhost:9292/users`)
       .then((resp) => resp.json())
       .then((data) => {
-        console.log("test user: ", data[0]);
+        // console.log("test user: ", data[0]);
         setSampleUser([data[0].user_name, data[0].password]);
       });
   }, []);

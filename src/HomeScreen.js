@@ -3,17 +3,49 @@ import React, { useState, useEffect } from "react";
 function HomeScreen({ toggleLogIn }) {
   const currentUser = localStorage.getItem("username")
   const [stockData, setStockData] = useState([]);
+  const [pointData, setPointData] = useState([]);
+  const [gainerData, setGainerData] = useState([]);
+  const [loserData, setLoserData] = useState([]);
 
   useEffect(() => {
     fetch(`http://localhost:9292/stocks`)
       .then((resp) => resp.json())
       .then((data) => {
         setStockData(data);
-        console.log(data);
+        // console.log(data);
       });
   }, []);
 
-  console.log(stockData);
+  useEffect(() => {
+    fetch(`http://localhost:9292/top_movers_by_points`)
+      .then((resp) => resp.json())
+      .then((data) => {
+        setPointData(data);
+        // console.log(data);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch(`http://localhost:9292/gainers_by_percentage`)
+      .then((resp) => resp.json())
+      .then((data) => {
+        setGainerData(data);
+        // console.log(data);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch(`http://localhost:9292/losers_by_percentage`)
+      .then((resp) => resp.json())
+      .then((data) => {
+        setLoserData(data);
+        // console.log(data);
+      });
+  }, []);
+
+  // console.log(stockData);
+  // console.log(pointData);
+
 
   const handleClick = () => {
     toggleLogIn();
@@ -31,7 +63,7 @@ function HomeScreen({ toggleLogIn }) {
 
   const displayStocks = stockData.map((stock) => {
     return (
-      <tr>
+      <tr key={stock.ticker}>
         <td>{stock.ticker}</td>
         <td>{stock.company}</td>
         <td>{stock.stock_price.price}</td>
@@ -43,7 +75,51 @@ function HomeScreen({ toggleLogIn }) {
     );
   });
   
-  console.log(displayStocks)
+  const displayStocksByPoint = pointData.map((stock) => {
+    return (
+      <tr key={stock.ticker}>
+        <td>{stock.ticker}</td>
+        <td>{stock.company}</td>
+        <td>{stock.stock_price.price}</td>
+        <td>{stock.stock_price.change_point}</td>
+        <td>{stock.stock_price.change_percentage}</td>
+        <td>{stock.stock_price.total_vol}</td>
+        <td><button onClick={ (e) => handleAddToWatchList(e, stock)}>Add to Watch List</button></td>
+      </tr> 
+    );
+  });
+
+  const displayGainerStocks = gainerData.map((stock) => {
+    return (
+      <tr key={stock.ticker}>
+        <td>{stock.ticker}</td>
+        <td>{stock.company}</td>
+        <td>{stock.stock_price.price}</td>
+        <td>{stock.stock_price.change_point}</td>
+        <td>{stock.stock_price.change_percentage}</td>
+        <td>{stock.stock_price.total_vol}</td>
+        <td><button onClick={ (e) => handleAddToWatchList(e, stock)}>Add to Watch List</button></td>
+      </tr> 
+    );
+  });
+
+  const displayLoserStocks = loserData.map((stock) => {
+    return (
+      <tr key={stock.ticker}>
+        <td>{stock.ticker}</td>
+        <td>{stock.company}</td>
+        <td>{stock.stock_price.price}</td>
+        <td>{stock.stock_price.change_point}</td>
+        <td>{stock.stock_price.change_percentage}</td>
+        <td>{stock.stock_price.total_vol}</td>
+        <td><button onClick={ (e) => handleAddToWatchList(e, stock)}>Add to Watch List</button></td>
+      </tr> 
+    );
+  });
+
+  // console.log(displayStocks);
+  // console.log(pointData);
+
   
   return (
     <div>
@@ -52,7 +128,7 @@ function HomeScreen({ toggleLogIn }) {
       </h1>
 
       <div className="title-div">
-        <h3 className="table-title">Trending</h3>
+        <h3 className="table-title">Top 20</h3>
       </div>
       <div className="home-table">
           <table> 
@@ -70,7 +146,7 @@ function HomeScreen({ toggleLogIn }) {
           </table>
       </div>
       <div className="title-div">
-        <h3 className="table-title">Top 20</h3>
+        <h3 className="table-title">Top Movers</h3>
       </div>
       <div className="home-table">
         <table> 
@@ -83,7 +159,7 @@ function HomeScreen({ toggleLogIn }) {
             <th>% Change</th>
             <th>Volume</th>
           </tr> 
-          {displayStocks}
+          {displayStocksByPoint}
           </tbody>
         </table>
       </div>
@@ -101,7 +177,7 @@ function HomeScreen({ toggleLogIn }) {
               <th>% Change</th>
               <th>Volume</th>
             </tr> 
-            {displayStocks}
+            {displayGainerStocks}
             </tbody>
           </table>
       </div>
@@ -119,7 +195,7 @@ function HomeScreen({ toggleLogIn }) {
             <th>% Change</th>
             <th>Volume</th>
           </tr> 
-          {displayStocks}
+          {displayLoserStocks}
           </tbody>
         </table>
       </div>
