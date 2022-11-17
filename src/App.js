@@ -24,7 +24,7 @@ function App() {
     } else {
       setIsLoggedIn(false);
     }
-  }, []);
+  }, [isLoggedIn]);
 
   const toggleLogIn = () => {
     setIsLoggedIn((status) => !status);
