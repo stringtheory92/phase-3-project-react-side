@@ -2,17 +2,18 @@ import React, { useState, useEffect } from "react";
 
 function Trading({ userState, toggleLogIn, isLoggedIn }) {
   const [stockList, setStockList] = useState([]);
+  const [buySell, setBuySell] = useState(true); // buy = true, sell = false
   const [user, setUser] = useState({
-    userId: "",
-    userName: "",
-    password: "",
-    balance: "",
+    userId: userState.id,
+    userName: userState.user_name,
+    password: userState.password,
+    balance: userState.balance,
     userPortfolio: [],
   });
   const [formData, setFormData] = useState({
     // userAmount: control for amount (in quantity of shares) to purchase
     // stockSearch: the control for the search input
-    userAmount: "",
+    userAmount: 0,
     stockSearch: "",
     selectedStock: { ticker: "Choose a stock", stock_price: { price: 0 } },
 
@@ -41,10 +42,14 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
     const { user_name: userName, password, balance, portfolio, id } = data;
 
     let newBalance;
-    if (user.balance.length > 0) {
-      if (balance !== user.balance) {
+    // console.log("user.balance: ", user.balance);
+    if (user.balance > 0) {
+      // console.log("line 45");
+      if (balance !== Number(user.balance)) {
+        console.log("update price and portfolio on backend");
         newBalance = user.balance;
 
+        //===== CONFIG OBJ'S ==========
         const configObjPATCH = {
           method: "PATCH",
           headers: {
@@ -52,7 +57,7 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
             accept: "application/json",
           },
           body: JSON.stringify({
-            balance: newBalance,
+            balance: Number(user.balance),
           }),
         };
         const configObjPOST = {
@@ -63,29 +68,35 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
           },
           body: JSON.stringify({
             user_id: id,
-            stock_id: "x", // need to pass stock id in to updateUser (perhaps from formData.selectedStock)
+            stock_id: formData.selectedStock.id, // need to pass stock id in to updateUser (perhaps from formData.selectedStock)
           }),
         };
+
+        //====== UPDATE USER BALANCE AND STOCK HOLDINGS ======
         // Update user with new balance
         fetch(
           `http://localhost:9292/users/${localStorage.getItem("username")}`,
           configObjPATCH
         )
           .then((r) => r.json())
-          .then((data) => console.log("user:patchBalance: ", data));
-        //Update user with new portfolio (POST)
-        // .then(fetch(`/users/:id/userstocks_joins`, configObjPOST));
-      }
-    } else newBalance = balance;
+          .then((data) => console.log("user:patchBalance: ", data))
 
-    setUser({
-      ...user,
-      userName: userName,
-      password: password,
-      balance: newBalance,
-      userPortfolio: portfolio,
-      userId: id,
-    });
+          //Update user with new portfolio (POST)
+          .then(fetch(`/users/${id}/userstocks_joins`, configObjPOST))
+          .then((r) => r.json())
+          .then((data) => console.log("updated stock data: ", data));
+      }
+    } else {
+      newBalance = balance;
+      setUser({
+        ...user,
+        userName: userName,
+        password: password,
+        userPortfolio: portfolio,
+        balance: balance.toFixed(2),
+        userId: id,
+      });
+    }
   };
   console.log("user in state: ", user);
 
@@ -111,6 +122,7 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
           // console.log("data: ", data);
           // if (typeof data === Array) setStockList(data);
           // else setStockList([data]);
+          setUser({ ...user, userPortfolio: data.portfolio });
           setStockList(data);
         });
     } else {
@@ -118,7 +130,7 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
       fetch(`http://localhost:9292/stocks`)
         .then((r) => r.json())
         .then((data) => {
-          console.log("stockList in fetch: ", data);
+          // console.log("stockList in fetch: ", data);
           // console.log("data.length: ", data.length);
           // if (data.length > 0) {
           // console.log("true: ", data.length);
@@ -150,12 +162,17 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
 
     setFormData({ ...formData, selectedStock: focusStock });
   };
-  const handleBuySubmit = () => {
+  const handleBuySubmit = (e) => {
+    e.preventDefault();
     //purchase price
     const purchasePrice =
       formData.selectedStock.stock_price.price * Number(formData.userAmount);
+    console.log("user.balance: ", user.balance);
+    console.log("purchasePrice: ", purchasePrice);
+    const remaining = user.balance - purchasePrice;
     //set user.balance in state, update (patch) user's balance, then post to userstocks_joins table
-    setUser({ ...user, balance: user.balance - purchasePrice });
+    if (remaining >= 0) setUser({ ...user, balance: remaining });
+    else alert("Insufficient Funds");
   };
 
   // ==================================================================================
@@ -232,13 +249,26 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
     <div>
       <div style={mainPage}>
         <h2>Trading</h2>
+        <div>
+          <ul>
+            {user.userPortfolio.map((stock) => {
+              return (
+                <li
+                  key={stock.id}
+                >{`${stock.company} ${stock.ticker} ${stock.count}`}</li>
+              );
+            })}
+          </ul>
+        </div>
 
         <form style={formStyles} onSubmit={handleBuySubmit}>
           <label htmlFor="user-tokens" style={swapText}>
             {`${user.userName}'s trading account`}
           </label>
           <div style={inputDiv}>
-            <div style={dropDownInput}>{`Cash Balance: $${user.balance}`}</div>
+            <div style={dropDownInput}>{`Cash Balance: $${user.balance.toFixed(
+              2
+            )}`}</div>
             {/* <input
               style={numberInput}
               type="number"
@@ -286,15 +316,15 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
               formData.selectedStock.stock_price.price *
               Number(formData.userAmount)
             }`}</div>
-            <div style={dropDownInput}>{`Balance Remaining: $${
+            <div style={dropDownInput}>{`Balance Remaining: $${(
               user.balance -
               formData.selectedStock.stock_price.price *
                 Number(formData.userAmount)
-            }`}</div>
+            ).toFixed(2)}`}</div>
           </div>
 
           <button type="submit" style={confirmBtn}>
-            BUY
+            {buySell ? "BUY" : "SELL"}
           </button>
         </form>
       </div>

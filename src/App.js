@@ -18,7 +18,7 @@ function App() {
     console.log("isLoggedIn: ", isLoggedIn);
     if (currentUser) {
       setIsLoggedIn(true);
-      fetch(`http://localhost:9292/users/${currentUser}`)
+      fetch(`http://localhost:9292/users/${currentUser}/userstocks_joins`)
         .then((resp) => resp.json())
         .then((data) => setUserState(data));
     } else {
