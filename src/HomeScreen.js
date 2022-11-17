@@ -68,7 +68,7 @@ function HomeScreen({ toggleLogIn }) {
         <td>{stock.company}</td>
         <td>{stock.stock_price.price}</td>
         <td>{stock.stock_price.change_point}</td>
-        <td>{stock.stock_price.change_percentage}</td>
+        <td>{stock.stock_price.change_percentage}%</td>
         <td>{stock.stock_price.total_vol}</td>
         <td><button onClick={ (e) => handleAddToWatchList(e, stock)}>Add to Watch List</button></td>
       </tr> 
@@ -82,7 +82,7 @@ function HomeScreen({ toggleLogIn }) {
         <td>{stock.company}</td>
         <td>{stock.stock_price.price}</td>
         <td>{stock.stock_price.change_point}</td>
-        <td>{stock.stock_price.change_percentage}</td>
+        <td>{stock.stock_price.change_percentage}%</td>
         <td>{stock.stock_price.total_vol}</td>
         <td><button onClick={ (e) => handleAddToWatchList(e, stock)}>Add to Watch List</button></td>
       </tr> 
@@ -96,7 +96,7 @@ function HomeScreen({ toggleLogIn }) {
         <td>{stock.company}</td>
         <td>{stock.stock_price.price}</td>
         <td>{stock.stock_price.change_point}</td>
-        <td>{stock.stock_price.change_percentage}</td>
+        <td>{stock.stock_price.change_percentage}%</td>
         <td>{stock.stock_price.total_vol}</td>
         <td><button onClick={ (e) => handleAddToWatchList(e, stock)}>Add to Watch List</button></td>
       </tr> 
@@ -110,7 +110,7 @@ function HomeScreen({ toggleLogIn }) {
         <td>{stock.company}</td>
         <td>{stock.stock_price.price}</td>
         <td>{stock.stock_price.change_point}</td>
-        <td>{stock.stock_price.change_percentage}</td>
+        <td>{stock.stock_price.change_percentage}%</td>
         <td>{stock.stock_price.total_vol}</td>
         <td><button onClick={ (e) => handleAddToWatchList(e, stock)}>Add to Watch List</button></td>
       </tr> 
@@ -128,7 +128,7 @@ function HomeScreen({ toggleLogIn }) {
       </h1>
 
       <div className="title-div">
-        <h3 className="table-title">Top 20</h3>
+        <h3 className="table-title">Nasdaq Stocks</h3>
       </div>
       <div className="home-table">
           <table> 
@@ -146,7 +146,7 @@ function HomeScreen({ toggleLogIn }) {
           </table>
       </div>
       <div className="title-div">
-        <h3 className="table-title">Top Movers</h3>
+        <h3 className="table-title">Top Movers by Points</h3>
       </div>
       <div className="home-table">
         <table> 
@@ -164,7 +164,7 @@ function HomeScreen({ toggleLogIn }) {
         </table>
       </div>
       <div className="title-div">
-        <h3 className="table-title">Gainers</h3>
+        <h3 className="table-title">%Gainers</h3>
       </div>
       <div className="home-table">
           <table> 
@@ -182,7 +182,7 @@ function HomeScreen({ toggleLogIn }) {
           </table>
       </div>
       <div className="title-div">
-        <h3 className="table-title">Losers</h3>
+        <h3 className="table-title">%Losers</h3>
       </div>
       <div className="home-table">
         <table> 
