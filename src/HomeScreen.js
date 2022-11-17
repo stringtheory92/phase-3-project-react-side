@@ -43,11 +43,11 @@ function HomeScreen({ toggleLogIn }) {
     );
   });
   
-  // console.log(displayStocks)
+  console.log(displayStocks)
   
   return (
     <div>
-      <h1 className="home" >WELCOME {currentUser}!
+      <h1 className="home" >WELCOME, {currentUser}!
         <button className="logoutButton" onClick={handleClick}>Log Out</button>
       </h1>
 
@@ -56,6 +56,7 @@ function HomeScreen({ toggleLogIn }) {
       </div>
       <div className="home-table">
           <table> 
+            <tbody>
             <tr>
               <th>Ticker</th>
               <th>Name</th>
@@ -65,6 +66,7 @@ function HomeScreen({ toggleLogIn }) {
               <th>Volume</th>
             </tr> 
             {displayStocks}
+            </tbody>
           </table>
       </div>
       <div className="title-div">
@@ -72,6 +74,7 @@ function HomeScreen({ toggleLogIn }) {
       </div>
       <div className="home-table">
         <table> 
+        <tbody>
           <tr>
             <th>Ticker</th>
             <th>Name</th>
@@ -81,6 +84,7 @@ function HomeScreen({ toggleLogIn }) {
             <th>Volume</th>
           </tr> 
           {displayStocks}
+          </tbody>
         </table>
       </div>
       <div className="title-div">
@@ -88,6 +92,7 @@ function HomeScreen({ toggleLogIn }) {
       </div>
       <div className="home-table">
           <table> 
+          <tbody>
             <tr>
               <th>Ticker</th>
               <th>Name</th>
@@ -97,6 +102,7 @@ function HomeScreen({ toggleLogIn }) {
               <th>Volume</th>
             </tr> 
             {displayStocks}
+            </tbody>
           </table>
       </div>
       <div className="title-div">
@@ -104,6 +110,7 @@ function HomeScreen({ toggleLogIn }) {
       </div>
       <div className="home-table">
         <table> 
+        <tbody>
           <tr>
             <th>Ticker</th>
             <th>Name</th>
@@ -113,6 +120,7 @@ function HomeScreen({ toggleLogIn }) {
             <th>Volume</th>
           </tr> 
           {displayStocks}
+          </tbody>
         </table>
       </div>
     </div>
