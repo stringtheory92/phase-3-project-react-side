@@ -35,9 +35,9 @@ function HomeScreen({ toggleLogIn }) {
         <td>{stock.ticker}</td>
         <td>{stock.company}</td>
         <td>{stock.stock_price.price}</td>
-        <td>0.389</td>
-        <td>-0.04%</td>
-        <td>3.45M</td>
+        <td>{stock.stock_price.change_point}</td>
+        <td>{stock.stock_price.change_percentage}</td>
+        <td>{stock.stock_price.total_vol}</td>
         <td><button onClick={ (e) => handleAddToWatchList(e, stock)}>Add to Watch List</button></td>
       </tr> 
     );
