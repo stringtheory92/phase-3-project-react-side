@@ -21,7 +21,7 @@ function HomeScreen({ toggleLogIn }) {
   };
 
   function handleAddToWatchList(e, stock){
-    fetch(`http://localhost:9292/users/${currentUser}/addstock/${stock.id}`, {
+    fetch(`http://localhost:9292/users/${currentUser}/watchlist/addstock/${stock.id}`, {
       method: "POST",
       headers: {
         "Content-Type" : "application/json"
