@@ -96,13 +96,19 @@ function HomeScreen({ toggleLogIn }) {
         <td>{stock.stock_price.change_percentage}%</td>
         <td>{stock.stock_price.total_vol}</td>
         <td>
+          <AddToWatchListBtn
+            handleAddToWatchList={handleAddToWatchList}
+            stock={stock}
+          />
+        </td>
+        {/* <td>
           <button
             className="watchlistButton"
             onClick={(e) => handleAddToWatchList(e, stock)}
           >
             Add to Watch List
           </button>
-        </td>
+        </td> */}
       </tr>
     );
   });
@@ -117,13 +123,19 @@ function HomeScreen({ toggleLogIn }) {
         <td>{stock.stock_price.change_percentage}%</td>
         <td>{stock.stock_price.total_vol}</td>
         <td>
+          <AddToWatchListBtn
+            handleAddToWatchList={handleAddToWatchList}
+            stock={stock}
+          />
+        </td>
+        {/* <td>
           <button
             className="watchlistButton"
             onClick={(e) => handleAddToWatchList(e, stock)}
           >
             Add to Watch List
           </button>
-        </td>
+        </td> */}
       </tr>
     );
   });
@@ -138,13 +150,19 @@ function HomeScreen({ toggleLogIn }) {
         <td>{stock.stock_price.change_percentage}%</td>
         <td>{stock.stock_price.total_vol}</td>
         <td>
+          <AddToWatchListBtn
+            handleAddToWatchList={handleAddToWatchList}
+            stock={stock}
+          />
+        </td>
+        {/* <td>
           <button
             className="watchlistButton"
             onClick={(e) => handleAddToWatchList(e, stock)}
           >
             Add to Watch List
           </button>
-        </td>
+        </td> */}
       </tr>
     );
   });
