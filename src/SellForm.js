@@ -100,6 +100,8 @@ function SellForm({
     outline: "none",
     border: "none",
     color: "white",
+    fontWeight: "600",
+    fontSize: "1rem",
   };
 
   const currentHoldingsheader = {

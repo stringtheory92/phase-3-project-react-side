@@ -317,14 +317,18 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
   };
 
   const tradeHeader = {
-    fontSize: "2.5rem",
+    fontSize: "3rem",
+    fontWeight: "400",
+    letterSpacing: "0.4rem",
+    color: "white",
   };
 
   const buySellBtn = {
     backgroundColor: "#222",
-    color: "#b0afae",
+    color: "white",
     marginBottom: "2rem",
-    border: "none",
+    padding: "0.3rem 0.7rem",
+    border: "1px solid white",
   };
 
   //==================================================================================
