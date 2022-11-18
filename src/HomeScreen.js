@@ -72,7 +72,7 @@ function HomeScreen({ toggleLogIn }) {
         <td>{stock.company}</td>
         <td>{stock.stock_price.price}</td>
         <td>{stock.stock_price.change_point}</td>
-        <td>{stock.stock_price.change_percentage}</td>
+        <td>{stock.stock_price.change_percentage}%</td>
         <td>{stock.stock_price.total_vol}</td>
         <td><button className="watchlistButton" onClick={ (e) => handleAddToWatchList(e, stock)}>{isAdded ? "In Watchlist" : "Add to Watch List"}</button></td>
       </tr> 
@@ -86,7 +86,7 @@ function HomeScreen({ toggleLogIn }) {
         <td>{stock.company}</td>
         <td>{stock.stock_price.price}</td>
         <td>{stock.stock_price.change_point}</td>
-        <td>{stock.stock_price.change_percentage}</td>
+        <td>{stock.stock_price.change_percentage}%</td>
         <td>{stock.stock_price.total_vol}</td>
         <td><button className="watchlistButton" onClick={ (e) => handleAddToWatchList(e, stock)}>Add to Watch List</button></td>
       </tr> 
@@ -100,7 +100,7 @@ function HomeScreen({ toggleLogIn }) {
         <td>{stock.company}</td>
         <td>{stock.stock_price.price}</td>
         <td>{stock.stock_price.change_point}</td>
-        <td>{stock.stock_price.change_percentage}</td>
+        <td>{stock.stock_price.change_percentage}%</td>
         <td>{stock.stock_price.total_vol}</td>
         <td><button className="watchlistButton" onClick={ (e) => handleAddToWatchList(e, stock)}>Add to Watch List</button></td>
       </tr> 
@@ -114,7 +114,7 @@ function HomeScreen({ toggleLogIn }) {
         <td>{stock.company}</td>
         <td>{stock.stock_price.price}</td>
         <td>{stock.stock_price.change_point}</td>
-        <td>{stock.stock_price.change_percentage}</td>
+        <td>{stock.stock_price.change_percentage}%</td>
         <td>{stock.stock_price.total_vol}</td>
         <td><button className="watchlistButton" onClick={ (e) => handleAddToWatchList(e, stock)}>Add to Watch List</button></td>
       </tr> 
@@ -132,7 +132,7 @@ function HomeScreen({ toggleLogIn }) {
       </h1>
       <div className="home-table">
           <table> 
-            <caption className="table-label">✨ Top 20 ✨</caption>
+            <caption className="table-label">✨ Nasdaq Stocks ✨</caption>
             <tbody>
             <tr>
               <th>Ticker</th>
@@ -178,6 +178,7 @@ function HomeScreen({ toggleLogIn }) {
             </tbody>
           </table>
       </div>
+
       <div className="home-table">
         <table> 
         <caption className="table-label">🍃 Losers 🍃</caption>
