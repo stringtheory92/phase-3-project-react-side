@@ -42,14 +42,22 @@ function WatchList({ toggleLogIn }) {
   // console.log(userWatchList)
   const displayWatchList = userWatchList.map(stock => <WatchListStock key={stock.id} stock={stock} handleDelete={handleDelete}/>)
 
-  
-
-  
-
   return (
     <div>
-      <h2>Your Watchlist:</h2>
-      {displayWatchList}
+      <h2 className="watchlist-title">Your Watchlist:</h2>
+      <table className="watchlist-table">
+        <tbody>
+          <tr>
+            <th>Ticker</th>
+            <th>Name</th>
+            <th>Price</th>
+            {/* <th>Change</th>
+            <th>% Change</th>
+            <th>Volume</th> */}
+          </tr> 
+          {displayWatchList}
+        </tbody>
+      </table>
     </div>
   );
 }
