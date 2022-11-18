@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #e1f7f4;
 }
 
 code {
@@ -14,22 +15,18 @@ code {
 
 /* =========== Nav =============================================== */
 .nav {
-  /* background-color: rgb(247, 247, 252, 0.20); */
   color: rgb(78, 76, 76);
   display: flex;
   justify-content: space-between;
   align-items: stretch;
-  /* gap: 10rem; */
   padding: 1rem 2rem;
-  /* font-family: "Times New Roman"; */
   font-size: 17px;
   margin: 20px;
   font-weight: bold;
-  /* position: fixed; */
 }
 
 .nav ul {
-  background:rgb(255, 255, 255);
+  background:#e1f7f4;;
   padding: 0;
   margin: 0;
   list-style: none;
@@ -57,11 +54,13 @@ code {
 
 /* ==========home====================== */
 .home {
+  padding-top: 13px;
+  background-color: rgb(148, 191, 193);
+  height: 70px;
   text-align: center;
   margin-top: 70px;
-  /* margin-right: 200px; */
-  font-size: 60px;
-  color: rgb(111, 135, 232);
+  font-size: 40px;
+  color: rgb(41, 115, 98);
 }
 
 .logoutButton {
@@ -84,8 +83,8 @@ code {
   touch-action: manipulation;
   margin-right : 10px;
   position:absolute;
-  top: 20px;
-  right:20px;
+  top: 40px;
+  right: 50px;
 }
 
 .logoutButton:hover {
@@ -101,12 +100,6 @@ code {
   box-shadow: none;
 }
 
-/* .grid {
-  display: grid;
-  display: flex;
-  flex: 50%;
-} */
-
 .home-table {
   width: 80%;
   margin-top: 1px;
@@ -117,29 +110,32 @@ code {
   justify-content: center;
   align-items: center;
 }
-  
-/* .title-div {
 
-}  */
-
-.table-title {
-  margin-left: 15rem;
-  top: 10px;
-  /* left:20px;  */
-  position: relative;
+.table-label {
+  font-size: 25px;
+  font-weight: bold;
+  text-align: left;
+  margin: 10px;
 }
 
 table {
-  border: 3px solid rgb(39, 34, 139);
+  background-color: #f5fbfa;;
+  border: 5px solid rgb(62, 173, 99);
   width: 800px;
   height: 100px;
 }
   
 th {
-  border-bottom: 1px solid black;
+  border-bottom: 3px solid black;
+  font-weight: 850;
+  white-space: nowrap;
+  padding: 1rem;
 }
-  
+
 td {
+  border-bottom: 1px solid black;
+  font-weight: 450;
+  white-space: nowrap;
   text-align: center;
 }
 
@@ -147,9 +143,9 @@ td {
 .login {
   text-align: center;
   margin-top: 150px;
-  /* margin-right: 200px; */
   font-size: 60px;
-  color: rgb(55, 89, 222);
+  color: rgb(31, 124, 129);
+  font-style: italic;
 }
 
 .submitButton {
@@ -191,7 +187,7 @@ td {
   width: 250px;
   margin: 2em auto;
   padding: 1em 2em 1em 1em;
-  background: #fafafa;
+  background: #f5fbfa;
   border: 1px solid #ebebeb;
   box-shadow: rgba(0,0,0,0.14902) 0px 1px 1px 0px,rgba(0,0,0,0.09804) 0px 1px 2px 0px;
 }
@@ -199,7 +195,6 @@ td {
 .login-input {
   text-align: center;
   font-size: 18px;
-  /* font-style: bold; */
   padding: 10px 10px 10px 1px;
   display: block;
   background: #e8e6e6;
@@ -207,4 +202,106 @@ td {
   width: 100%;
   border: none;
   border-radius: 0;
+  font-weight: 450;
+}
+
+.watchlistButton {
+  background-color: #FFFFFF;
+  border: 1px solid rgb(155, 158, 163);
+  border-radius: .5rem;
+  width: 9rem;
+  color: #242934;
+  font-family: "Inter var",ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+  font-size: .7rem;
+  font-weight: 600;
+  padding: 0.5rem;
+  text-align: center;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  margin-left: 1rem;
+  margin-top: 0.5rem;
+}
+
+.watchlistButton:hover {
+  background-color: rgb(249,250,251);
+}
+
+.watchlistButton:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.watchlistButton:focus-visible {
+  box-shadow: none;
+}
+
+.watchlist-title {
+  padding-top: 13px;
+  height: 70px;
+  text-align: left;
+  margin-top: 70px;
+  margin-left: 60px;
+  font-size: 30px;
+  color: rgb(41, 115, 98);
+}
+
+.watchlist {
+  color: rgb(78, 76, 76);
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  padding: 1rem 2rem;
+  font-size: 17px;
+  margin: 20px;
+  font-weight: bold;
+  list-style: none;
+}
+
+.watchlist ul {
+  background:#e1f7f4;;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 2rem;
+}
+
+.removeWatchlistButton {
+  background-color: #FFFFFF;
+  border: 1px solid rgb(155, 158, 163);
+  border-radius: .5rem;
+  width: 11rem;
+  color: #242934;
+  font-family: "Inter var",ui-sans-serif,system-ui,-apple-system,system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+  font-size: .7rem;
+  font-weight: 600;
+  padding: 0.5rem;
+  text-align: center;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  margin-top: 0.5rem;
+}
+
+.removeWatchlistButton {
+  background-color: rgb(249,250,251);
+}
+
+.removeWatchlistButton {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.removeWatchlistButton:focus-visible {
+  box-shadow: none;
+}
+
+.watchlist-table {
+  background-color: #f5fbfa;
+  margin-left: 60px;
+  border: 5px solid rgb(62, 173, 99);
+  width: 600px;
+  height: 50px;
 }
