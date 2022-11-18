@@ -175,8 +175,10 @@ function SellForm({
             //   ? formData.selectedStock.stock_price.price *
             //     Number(formData.userAmount)
             //   : 0
-            formData.selectedStock.stock_price.price *
-            Number(formData.userAmount)
+            (
+              formData.selectedStock.stock_price.price *
+              Number(formData.userAmount)
+            ).toFixed(2)
           }`}</div>
           <div style={dropDownInput}>{`New Balance: $${(
             Number(user.balance) +

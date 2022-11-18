@@ -40,7 +40,7 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
           key={stock.id}
           // Can't have an object as the value of an option (otherwise I would pass in the whole {stock})
           value={stock.id}
-        >{`${stock.ticker}  ►  $${stock.stock_price.price}`}</option>
+        >{`${stock.ticker}   ⑊   $${stock.stock_price.price}`}</option>
       ))
     );
 
