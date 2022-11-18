@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
+import AddToWatchListBtn from "./AddToWatchListBtn";
 
 function HomeScreen({ toggleLogIn }) {
-  const currentUser = localStorage.getItem("username")
+  const currentUser = localStorage.getItem("username");
   const [stockData, setStockData] = useState([]);
   const [pointData, setPointData] = useState([]);
   const [gainerData, setGainerData] = useState([]);
@@ -47,22 +48,22 @@ function HomeScreen({ toggleLogIn }) {
   // console.log(stockData);
   // console.log(pointData);
 
-
   const handleClick = () => {
     toggleLogIn();
     localStorage.clear();
   };
 
-
-
-  function handleAddToWatchList(e, stock){
+  function handleAddToWatchList(e, stock) {
     setIsAdded(true);
-    fetch(`http://localhost:9292/users/${currentUser}/watchlist/addstock/${stock.id}`, {
-      method: "POST",
-      headers: {
-        "Content-Type" : "application/json"
+    fetch(
+      `http://localhost:9292/users/${currentUser}/watchlist/addstock/${stock.id}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
-    })
+    );
   }
 
   const displayStocks = stockData.map((stock) => {
@@ -74,11 +75,17 @@ function HomeScreen({ toggleLogIn }) {
         <td>{stock.stock_price.change_point}</td>
         <td>{stock.stock_price.change_percentage}%</td>
         <td>{stock.stock_price.total_vol}</td>
-        <td><button className="watchlistButton" onClick={ (e) => handleAddToWatchList(e, stock)}>{isAdded ? "In Watchlist" : "Add to Watch List"}</button></td>
-      </tr> 
+        <td>
+          <AddToWatchListBtn
+            handleAddToWatchList={handleAddToWatchList}
+            stock={stock}
+          />
+        </td>
+        {/* <td><button className="watchlistButton" onClick={ (e) => handleAddToWatchList(e, stock)}>{isAdded ? "In Watchlist" : "Add to Watch List"}</button></td> */}
+      </tr>
     );
   });
-  
+
   const displayStocksByPoint = pointData.map((stock) => {
     return (
       <tr key={stock.ticker}>
@@ -88,8 +95,15 @@ function HomeScreen({ toggleLogIn }) {
         <td>{stock.stock_price.change_point}</td>
         <td>{stock.stock_price.change_percentage}%</td>
         <td>{stock.stock_price.total_vol}</td>
-        <td><button className="watchlistButton" onClick={ (e) => handleAddToWatchList(e, stock)}>Add to Watch List</button></td>
-      </tr> 
+        <td>
+          <button
+            className="watchlistButton"
+            onClick={(e) => handleAddToWatchList(e, stock)}
+          >
+            Add to Watch List
+          </button>
+        </td>
+      </tr>
     );
   });
 
@@ -102,8 +116,15 @@ function HomeScreen({ toggleLogIn }) {
         <td>{stock.stock_price.change_point}</td>
         <td>{stock.stock_price.change_percentage}%</td>
         <td>{stock.stock_price.total_vol}</td>
-        <td><button className="watchlistButton" onClick={ (e) => handleAddToWatchList(e, stock)}>Add to Watch List</button></td>
-      </tr> 
+        <td>
+          <button
+            className="watchlistButton"
+            onClick={(e) => handleAddToWatchList(e, stock)}
+          >
+            Add to Watch List
+          </button>
+        </td>
+      </tr>
     );
   });
 
@@ -116,24 +137,33 @@ function HomeScreen({ toggleLogIn }) {
         <td>{stock.stock_price.change_point}</td>
         <td>{stock.stock_price.change_percentage}%</td>
         <td>{stock.stock_price.total_vol}</td>
-        <td><button className="watchlistButton" onClick={ (e) => handleAddToWatchList(e, stock)}>Add to Watch List</button></td>
-      </tr> 
+        <td>
+          <button
+            className="watchlistButton"
+            onClick={(e) => handleAddToWatchList(e, stock)}
+          >
+            Add to Watch List
+          </button>
+        </td>
+      </tr>
     );
   });
 
   // console.log(displayStocks);
   // console.log(pointData);
 
-  
   return (
     <div>
-      <h1 className="home" >Hey, {currentUser}! 💸
-        <button className="logoutButton" onClick={handleClick}>Log Out</button>
+      <h1 className="home">
+        Hey, {currentUser}! 💸
+        <button className="logoutButton" onClick={handleClick}>
+          Log Out
+        </button>
       </h1>
       <div className="home-table">
-          <table> 
-            <caption className="table-label">✨ Nasdaq Stocks ✨</caption>
-            <tbody>
+        <table>
+          <caption className="table-label">✨ Nasdaq Stocks ✨</caption>
+          <tbody>
             <tr>
               <th>Ticker</th>
               <th>Name</th>
@@ -141,13 +171,13 @@ function HomeScreen({ toggleLogIn }) {
               <th>Change</th>
               <th>% Change</th>
               <th>Volume</th>
-            </tr> 
+            </tr>
             {displayStocks}
-            </tbody>
-          </table>
+          </tbody>
+        </table>
       </div>
       <div className="home-table">
-        <table> 
+        <table>
           <caption className="table-label">☄️ Top Movers ☄️</caption>
           <tbody>
             <tr>
@@ -157,13 +187,13 @@ function HomeScreen({ toggleLogIn }) {
               <th>Change</th>
               <th>% Change</th>
               <th>Volume</th>
-            </tr> 
+            </tr>
             {displayStocksByPoint}
-            </tbody>
-          </table>
+          </tbody>
+        </table>
       </div>
       <div className="home-table">
-          <table> 
+        <table>
           <caption className="table-label">🔥 Gainers 🔥</caption>
           <tbody>
             <tr>
@@ -173,30 +203,30 @@ function HomeScreen({ toggleLogIn }) {
               <th>Change</th>
               <th>% Change</th>
               <th>Volume</th>
-            </tr> 
+            </tr>
             {displayGainerStocks}
-            </tbody>
-          </table>
+          </tbody>
+        </table>
       </div>
 
       <div className="home-table">
-        <table> 
-        <caption className="table-label">🍃 Losers 🍃</caption>
-        <tbody>
-          <tr>
-            <th>Ticker</th>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Change</th>
-            <th>% Change</th>
-            <th>Volume</th>
-          </tr> 
-          {displayLoserStocks}
+        <table>
+          <caption className="table-label">🍃 Losers 🍃</caption>
+          <tbody>
+            <tr>
+              <th>Ticker</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Change</th>
+              <th>% Change</th>
+              <th>Volume</th>
+            </tr>
+            {displayLoserStocks}
           </tbody>
         </table>
       </div>
     </div>
-  )
+  );
 }
 
 export default HomeScreen;

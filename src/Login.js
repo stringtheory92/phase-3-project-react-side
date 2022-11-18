@@ -44,9 +44,9 @@ function Login({ toggleLogIn }) {
   return (
     <>
       <h1 className="login">LET'S START INVESTING! 🌱</h1>
-      {/* <p className="loginForm">
+      <p className="loginForm">
         Login User: {sampleUser[0]}, password: {sampleUser[1]}
-      </p> */}
+      </p>
       <form className="loginForm" onSubmit={handleSubmit}>
         <div className="login-input">
           Username :{" "}
