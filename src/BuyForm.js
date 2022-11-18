@@ -12,6 +12,7 @@ function BuyForm({
   handleUserAmountChange,
   availableStocksDropDown,
 }) {
+  const [showHoldings, setShowHoldings] = useState(false);
   //   const [formData, setFormData] = useState({
   //     // userAmount: control for amount (in quantity of shares) to purchase
   //     // stockSearch: the control for the search input
@@ -20,6 +21,10 @@ function BuyForm({
   //     selectedStock: { ticker: "Choose a stock", stock_price: { price: 0 } },
   //     // totalPrice: "",
   //   });
+
+  const toggleShowHoldings = () => {
+    setShowHoldings((status) => !status);
+  };
   // ==================================================================================
   // ==================================================================================
   const mainPage = {
@@ -37,7 +42,7 @@ function BuyForm({
     flexDirection: "column",
     backgroundColor: "#444",
     width: "30rem",
-    height: "30rem",
+    // height: "30rem",
     padding: "3rem",
     color: "#b0afae",
     boxShadow: "0 0 4px #999",
@@ -51,10 +56,14 @@ function BuyForm({
     backgroundColor: "#333",
     borderRadius: "5px",
     padding: "0.4rem ",
+    marginTop: "0.5rem",
+    marginBottom: "1rem",
   };
 
   const numberInput = {
     padding: "0.5rem 0.5rem",
+    marginTop: "0.5rem",
+    marginBottom: "1rem",
     borderRadius: "6px",
     border: "none",
     outline: "none",
@@ -72,6 +81,7 @@ function BuyForm({
 
   const infoDiv = {
     marginTop: "1rem",
+    marginBottom: "1rem",
     backgroundColor: "#333",
     borderRadius: "5px",
     padding: "0.4rem ",
@@ -85,6 +95,22 @@ function BuyForm({
     outline: "none",
     border: "none",
     color: "white",
+  };
+
+  const currentHoldingsheader = {
+    marginBottom: "0.5rem",
+  };
+
+  const hideShowBtn = {
+    backgroundColor: "#444",
+    color: "#b0afae",
+    outline: "none",
+    border: "none",
+  };
+
+  const portfolioList = {
+    marginBottom: "0.5rem",
+    textAlign: "left",
   };
 
   //==================================================================================
@@ -113,6 +139,7 @@ function BuyForm({
         <label htmlFor="stock_search">Search Available Stocks</label>
         <input
           type="text"
+          style={numberInput}
           name="stockSearch"
           id="stockSearch"
           value={formData.stockSearch}
@@ -160,6 +187,27 @@ function BuyForm({
         <button type="submit" style={confirmBtn}>
           {buySell ? "BUY" : "SELL"}
         </button>
+        <div>
+          <div>
+            <h3 style={currentHoldingsheader}>Current Holdings</h3>
+            <button onClick={toggleShowHoldings} style={hideShowBtn}>
+              {showHoldings ? "Hide?" : "Show?"}
+            </button>
+          </div>
+          <ul>
+            {" "}
+            {!showHoldings
+              ? "*** HIDDEN ***"
+              : user.userPortfolio.map((stock) => {
+                  return (
+                    <li
+                      key={stock.id}
+                      style={portfolioList}
+                    >{` ${stock.count} ${stock.company} ${stock.ticker}`}</li>
+                  );
+                })}
+          </ul>
+        </div>
       </form>
     </div>
   );

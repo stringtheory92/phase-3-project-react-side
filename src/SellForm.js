@@ -12,6 +12,7 @@ function SellForm({
   handleUserAmountChange,
   userStocksDropDown,
 }) {
+  const [showHoldings, setShowHoldings] = useState(false);
   //   const [formData, setFormData] = useState({
   //     // userAmount: control for amount (in quantity of shares) to purchase
   //     // stockSearch: the control for the search input
@@ -21,6 +22,10 @@ function SellForm({
 
   //     // totalPrice: "",
   //   });
+
+  const toggleShowHoldings = () => {
+    setShowHoldings((status) => !status);
+  };
   // ==================================================================================
   // ==================================================================================
   const mainPage = {
@@ -38,7 +43,7 @@ function SellForm({
     flexDirection: "column",
     backgroundColor: "#444",
     width: "30rem",
-    height: "30rem",
+    // height: "30rem",
     padding: "3rem",
     color: "#b0afae",
     boxShadow: "0 0 4px #999",
@@ -46,6 +51,7 @@ function SellForm({
 
   const swapText = {
     textAlign: "left",
+    marginBottom: "0.5rem",
   };
 
   const inputDiv = {
@@ -56,6 +62,8 @@ function SellForm({
 
   const numberInput = {
     padding: "0.5rem 0.5rem",
+    marginTop: "0.5rem",
+    marginBottom: "1rem",
     borderRadius: "6px",
     border: "none",
     outline: "none",
@@ -73,6 +81,7 @@ function SellForm({
 
   const infoDiv = {
     marginTop: "1rem",
+    marginBottom: "1rem",
     backgroundColor: "#333",
     borderRadius: "5px",
     padding: "0.4rem ",
@@ -88,6 +97,22 @@ function SellForm({
     color: "white",
   };
 
+  const currentHoldingsheader = {
+    marginBottom: "0.5rem",
+  };
+
+  const hideShowBtn = {
+    backgroundColor: "#444",
+    color: "#b0afae",
+    outline: "none",
+    border: "none",
+  };
+
+  const portfolioList = {
+    marginBottom: "0.5rem",
+    textAlign: "left",
+  };
+
   //==================================================================================
   //==================================================================================
 
@@ -95,13 +120,14 @@ function SellForm({
     <div>
       <h1>Sell</h1>
       <form style={formStyles} onSubmit={handleSellSubmit}>
-        <label htmlFor="user-tokens" style={swapText}>
+        {/* <label htmlFor="user-tokens" style={swapText}>
           {`${user.userName}'s trading account`}
-        </label>
+        </label> */}
 
-        <label htmlFor="stock_search">Search Available Stocks</label>
+        <label htmlFor="stock_search">Search Stocks In Portfolio</label>
         <input
           type="text"
+          style={numberInput}
           name="stockSearch"
           id="stockSearch"
           value={formData.stockSearch}
@@ -161,6 +187,27 @@ function SellForm({
         <button type="submit" style={confirmBtn}>
           {buySell ? "BUY" : "SELL"}
         </button>
+        <div>
+          <div>
+            <h3 style={currentHoldingsheader}>Current Holdings</h3>
+            <button onClick={toggleShowHoldings} style={hideShowBtn}>
+              {showHoldings ? "Hide?" : "Show?"}
+            </button>
+          </div>
+          <ul>
+            {" "}
+            {!showHoldings
+              ? "*** HIDDEN ***"
+              : user.userPortfolio.map((stock) => {
+                  return (
+                    <li
+                      key={stock.id}
+                      style={portfolioList}
+                    >{` ${stock.count} ${stock.company} ${stock.ticker}`}</li>
+                  );
+                })}
+          </ul>
+        </div>
       </form>
     </div>
   );
