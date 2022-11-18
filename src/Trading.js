@@ -44,6 +44,23 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
       ))
     );
 
+  let userStocksDropDown = user.userPortfolio.map((stock) => {
+    const stockItem = stockList.find(
+      (listedStock) => stock.id === listedStock.id
+    );
+    const stockPrice = stockItem.stock_price
+      ? stockItem.stock_price.price
+      : "none";
+
+    console.log("stock price: ", stockPrice);
+    return (
+      <option
+        key={stock.id}
+        value={stock.id}
+      >{`${stock.ticker} - available: ${stock.count}  @  $${stockPrice}`}</option>
+    );
+  });
+
   //=============== USE EFFECTS ================================================================
 
   const deleteUserStocks = (configObjDELETE, user_id, stock_id) => {
@@ -240,10 +257,7 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
   }, [formData.stockSearch]);
   // console.log("stockList: ", stockList);
   //=============== HANDLERS ==============================================================
-  // const handleClick = () => {
-  //   toggleLogIn();
-  //   localStorage.clear();
-  // };
+
   const handleUserAmountChange = (e) => {
     setFormData({ ...formData, userAmount: e.target.value });
   };
@@ -286,40 +300,6 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
   const handleBuySellToggle = () => {
     setBuySell((buySell) => !buySell);
   };
-  //================== SELL FORM ===========================================================
-  //================== SELL FORM ===========================================================
-  //================== SELL FORM ===========================================================
-  // let userStocksDropDown;
-  // if (formData.stockSearch.length > 0) {
-  //   userStocksDropDown = user.userPortfolio.map((stock) => {
-  //     const stockPrice = stockList.find(
-  //       (listedStock) => stock.id === listedStock.id
-  //     ).stock_price.price;
-  //     console.log(stockPrice);
-  //     return (
-  //       <option
-  //         key={stock.id}
-  //         value={stock.id}
-  //       >{`${stock.ticker} - available: ${stock.count}  @  $${stockPrice}`}</option>
-  //     );
-  //   });
-  // }
-  let userStocksDropDown = user.userPortfolio.map((stock) => {
-    const stockItem = stockList.find(
-      (listedStock) => stock.id === listedStock.id
-    );
-    const stockPrice = stockItem.stock_price
-      ? stockItem.stock_price.price
-      : "none";
-
-    console.log("stock price: ", stockPrice);
-    return (
-      <option
-        key={stock.id}
-        value={stock.id}
-      >{`${stock.ticker} - available: ${stock.count}  @  $${stockPrice}`}</option>
-    );
-  });
 
   // console.log(user.userPortfolio);
 
@@ -346,61 +326,6 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
     marginBottom: "2rem",
     border: "none",
   };
-
-  // const formStyles = {
-  //   display: "flex",
-  //   flexDirection: "column",
-  //   backgroundColor: "#444",
-  //   width: "30rem",
-  //   height: "30rem",
-  //   padding: "3rem",
-  //   color: "#b0afae",
-  //   boxShadow: "0 0 4px #999",
-  // };
-
-  // const swapText = {
-  //   textAlign: "left",
-  // };
-
-  // const inputDiv = {
-  //   backgroundColor: "#333",
-  //   borderRadius: "5px",
-  //   padding: "0.4rem ",
-  // };
-
-  // const numberInput = {
-  //   padding: "0.5rem 0.5rem",
-  //   borderRadius: "6px",
-  //   border: "none",
-  //   outline: "none",
-  //   backgroundColor: "#333",
-  //   color: "#b0afae",
-  // };
-
-  // const dropDownInput = {
-  //   backgroundColor: "#222",
-  //   borderRadius: "6px",
-  //   padding: "0.5rem 0.5rem",
-  //   color: "#b0afae",
-  //   border: "1px solid #555",
-  // };
-
-  // const infoDiv = {
-  //   marginTop: "1rem",
-  //   backgroundColor: "#333",
-  //   borderRadius: "5px",
-  //   padding: "0.4rem ",
-  // };
-
-  // const confirmBtn = {
-  //   width: "8rem",
-  //   backgroundColor: "dodgerBlue",
-  //   padding: "0.5rem 0.9rem",
-  //   borderRadius: "10px",
-  //   outline: "none",
-  //   border: "none",
-  //   color: "white",
-  // };
 
   //==================================================================================
   //==================================================================================
