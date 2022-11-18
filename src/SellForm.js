@@ -215,7 +215,7 @@ function SellForm({
                     <li
                       key={stock.id}
                       style={portfolioList}
-                    >{` ${stock.count} ${stock.company} ${stock.ticker}`}</li>
+                    >{` ${stock.count} ${stock.ticker} ⑊ ${stock.company} `}</li>
                   );
                 })}
           </ul>
