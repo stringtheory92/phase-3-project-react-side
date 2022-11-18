@@ -48,7 +48,7 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
     const stockItem = stockList.find(
       (listedStock) => stock.id === listedStock.id
     );
-    const stockPrice = stockItem.stock_price
+    const stockPrice = stockItem?.stock_price
       ? stockItem.stock_price.price
       : "none";
 
@@ -66,18 +66,7 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
   const deleteUserStocks = (configObjDELETE, user_id, stock_id) => {
     console.log("inDelete");
     console.log("formData.userAmount: ", formData.userAmount);
-    // let soldStocks = 1;
-    // while (soldStocks >= Number(formData.userAmount)) {
-    //   fetch(
-    //     `http://localhost:9292/userstocks_joins/${user_id}/${stock_id}`,
-    //     configObjDELETE
-    //   )
-    //     .then((r) => r.json())
-    //     .then((data) => {
-    //       console.log("updated stock data: ", data);
-    //       updateUser({ ...user, userPortfolio: data.portfolio });
-    //       soldStocks += 1;
-    //     });
+
     fetch(
       `http://localhost:9292/userstocks_joins/${user_id}/${stock_id}/${formData.userAmount}`,
       configObjDELETE
@@ -85,7 +74,7 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
       .then((r) => r.json())
       .then((data) => {
         console.log("updated stock data: ", data);
-        updateUser({ ...user, userPortfolio: data.portfolio });
+        setUser({ ...user, userPortfolio: data.portfolio });
       });
   };
   console.log("buySell: ", buySell);
@@ -99,32 +88,6 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
       if (balance !== Number(user.balance)) {
         console.log("update price and portfolio on backend");
         newBalance = user.balance;
-
-        //===== CONFIG OBJ'S ==========
-        // const configObjPATCH = {
-        //   method: "PATCH",
-        //   headers: {
-        //     "content-type": "application/json",
-        //     accept: "application/json",
-        //   },
-        //   body: JSON.stringify({
-        //     balance: Number(user.balance),
-        //   }),
-        // };
-
-        // const configObjPOST = generatePOSTConfig();
-        // const configObjDELETE = generateDELETEConfig();
-
-        // const updateUser = (data) => {
-        //   const { user_name: userName, password, balance, portfolio, id } = data;
-
-        //   let newBalance;
-        //   // console.log("user.balance: ", user.balance);
-        //   if (user.balance > 0) {
-        //     // console.log("line 45");
-        //     if (balance !== Number(user.balance)) {
-        //       console.log("update price and portfolio on backend");
-        //       newBalance = user.balance;
 
         //===== CONFIG OBJ'S ==========
         const configObjPATCH = {
@@ -175,7 +138,7 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
                   .then((r) => r.json())
                   .then((data) => {
                     console.log("updated stock data: ", data);
-                    updateUser({
+                    setUser({
                       ...user,
                       userPortfolio: data.portfolio,
                     });
