@@ -7,6 +7,7 @@ function BuyForm({
   handleBuySubmit,
   generatePOSTConfig,
   formData,
+  setFormData,
   handleSelectedStockChange,
   handleStockSearchChange,
   handleUserAmountChange,
@@ -23,6 +24,7 @@ function BuyForm({
   //   });
 
   const toggleShowHoldings = () => {
+    setFormData({ ...formData, userAmount: 0 });
     setShowHoldings((status) => !status);
   };
   // ==================================================================================

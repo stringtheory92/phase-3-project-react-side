@@ -7,6 +7,7 @@ function SellForm({
   handleSellSubmit,
   generateDELETEConfig,
   formData,
+  setFormData,
   handleSelectedStockChange,
   handleStockSearchChange,
   handleUserAmountChange,
@@ -24,6 +25,7 @@ function SellForm({
   //   });
 
   const toggleShowHoldings = () => {
+    setFormData({ ...formData, userAmount: 0 });
     setShowHoldings((status) => !status);
   };
   // ==================================================================================

@@ -359,6 +359,7 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
               user={user}
               stockList={stockList}
               formData={formData}
+              setFormData={setFormData}
               // generatePOSTConfig={generatePOSTConfig}
               handleStockSearchChange={handleStockSearchChange}
               handleSelectedStockChange={handleSelectedStockChange}
@@ -372,6 +373,7 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
               user={user}
               stockList={stockList}
               formData={formData}
+              setFormData={setFormData}
               // generateDELETEConfig={generateDELETEConfig}
               handleSelectedStockChange={handleSelectedStockChange}
               handleStockSearchChange={handleStockSearchChange}
