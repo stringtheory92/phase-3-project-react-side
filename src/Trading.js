@@ -327,12 +327,24 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
   // ==================================================================================
   const mainPage = {
     backgroundColor: "#222",
-    color: "white",
+    // color: "white",
+    color: "#d4d2cf",
     textAlign: "center",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     height: "100vh",
+  };
+
+  const tradeHeader = {
+    fontSize: "2.5rem",
+  };
+
+  const buySellBtn = {
+    backgroundColor: "#222",
+    color: "#b0afae",
+    marginBottom: "2rem",
+    border: "none",
   };
 
   // const formStyles = {
@@ -396,9 +408,11 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
   return (
     <div>
       <div style={mainPage}>
-        <h1>Trading</h1>
-        <button onClick={handleBuySellToggle}>Buy|Sell</button>
-        <div>
+        <h1 style={tradeHeader}>TRADE</h1>
+        <button onClick={handleBuySellToggle} style={buySellBtn}>
+          Buy | Sell
+        </button>
+        {/* <div>
           <ul>
             {user.userPortfolio.map((stock) => {
               return (
@@ -408,7 +422,7 @@ function Trading({ userState, toggleLogIn, isLoggedIn }) {
               );
             })}
           </ul>
-        </div>
+        </div> */}
         <div>
           {buySell ? (
             <BuyForm

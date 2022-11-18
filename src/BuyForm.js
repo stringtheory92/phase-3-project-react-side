@@ -43,9 +43,14 @@ function BuyForm({
     backgroundColor: "#444",
     width: "30rem",
     // height: "30rem",
-    padding: "3rem",
+    padding: "2rem 3rem",
     color: "#b0afae",
     boxShadow: "0 0 4px #999",
+  };
+
+  const buyHeader = {
+    marginTop: "0rem",
+    fontSize: "1.6rem",
   };
 
   const swapText = {
@@ -108,6 +113,11 @@ function BuyForm({
     border: "none",
   };
 
+  const whenHidden = {
+    textAlign: "center",
+    padding: "0",
+  };
+
   const portfolioList = {
     marginBottom: "0.5rem",
     textAlign: "left",
@@ -117,11 +127,11 @@ function BuyForm({
   //==================================================================================
   return (
     <div>
-      <h2>Buy</h2>
       <form style={formStyles} onSubmit={handleBuySubmit}>
-        <label htmlFor="user-tokens" style={swapText}>
-          {`${user.userName}'s trading account`}
-        </label>
+        <h2 style={buyHeader}>Buy</h2>
+        {/* <label htmlFor="user-tokens" style={swapText}>
+          {`trading account`}
+        </label> */}
         <div style={inputDiv}>
           <div style={dropDownInput}>
             {/* {`Cash Balance: $${user.balance}`} */}
@@ -194,7 +204,7 @@ function BuyForm({
               {showHoldings ? "Hide?" : "Show?"}
             </button>
           </div>
-          <ul>
+          <ul style={whenHidden}>
             {" "}
             {!showHoldings
               ? "*** HIDDEN ***"

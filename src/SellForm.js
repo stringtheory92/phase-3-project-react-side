@@ -44,9 +44,14 @@ function SellForm({
     backgroundColor: "#444",
     width: "30rem",
     // height: "30rem",
-    padding: "3rem",
+    padding: "2rem 3rem",
     color: "#b0afae",
     boxShadow: "0 0 4px #999",
+  };
+
+  const sellHeader = {
+    marginTop: "0rem",
+    fontSize: "1.6rem",
   };
 
   const swapText = {
@@ -108,6 +113,11 @@ function SellForm({
     border: "none",
   };
 
+  const whenHidden = {
+    textAlign: "center",
+    padding: "0",
+  };
+
   const portfolioList = {
     marginBottom: "0.5rem",
     textAlign: "left",
@@ -118,8 +128,8 @@ function SellForm({
 
   return (
     <div>
-      <h1>Sell</h1>
       <form style={formStyles} onSubmit={handleSellSubmit}>
+        <h2 style={sellHeader}>Sell</h2>
         {/* <label htmlFor="user-tokens" style={swapText}>
           {`${user.userName}'s trading account`}
         </label> */}
@@ -194,7 +204,7 @@ function SellForm({
               {showHoldings ? "Hide?" : "Show?"}
             </button>
           </div>
-          <ul>
+          <ul style={whenHidden}>
             {" "}
             {!showHoldings
               ? "*** HIDDEN ***"
